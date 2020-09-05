@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#EDAE51</color>
+    <color name="colorPrimaryDark">#372203</color>
+    <color name="colorAccent">#53C6BB</color>
+    <color name="background">#F1EDE3</color>
+    <color name="chip_color">#F3E1AB</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="chip_text_color">#2C2100</color>
+</resources>

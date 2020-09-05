@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Realfree</string>
+    <string name="app_title">OLX бесплатно</string>
+    <string name="search_adv">TODO</string>
+    <string name="hobbies_leisure">Хобби и отдых</string>
+    <string name="home_garden">Дом и сад</string>
+    <string name="transport_parts">Запчасти для транспорта</string>
+    <string name="electronics">Электроника</string>
+    <string name="business_services">Бизнес и услуги</string>
+    <string name="fashion_style">Мода и стиль</string>
+</resources>
