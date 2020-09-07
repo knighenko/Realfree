@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Метод соединяется с сервером
+     * Метод соединяется с  сервером и получает массив обьявлений
      */
 
     private void connectToServer(final String Url) {
@@ -51,14 +51,11 @@ public class MainActivity extends AppCompatActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-
                     try {
                         ConnectServer connectServer = new ConnectServer("91.235.129.33", 8080);
                         advertisements = new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements();
-
                     } catch (IOException e) {
                         e.printStackTrace();
-
                     }
                 }
             }).start();
