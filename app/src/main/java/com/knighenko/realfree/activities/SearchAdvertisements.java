@@ -1,23 +1,32 @@
 package com.knighenko.realfree.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.R;
+import com.knighenko.realfree.model.ConnectServer;
+import com.knighenko.realfree.model.JsonToObject;
+import com.knighenko.realfree.model.UrlOfPages;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 
 public class SearchAdvertisements extends AppCompatActivity {
     private ChipGroup chipGroup;
-    private Chip chip;
+    private Intent intent;
+    private ArrayList<Advertisement> advertisements;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +37,58 @@ public class SearchAdvertisements extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        chipGroup = findViewById(R.id.chip_group);
-        for (int i=0; i<chipGroup.getChildCount();i++){
-            Chip chip = (Chip)chipGroup.getChildAt(i);
-            if (chip.isChecked()){
-                System.out.println("Hello");
+        chipGroup = (ChipGroup) findViewById(R.id.my_chip_group);
+        chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+                chekChip(chipGroup);
             }
+        });
+    }
+
+    /**
+     * Метод проверяет какой чип выбран и генерирует результат
+     */
+    private void chekChip(ChipGroup chipGroup) {
+        switch (chipGroup.getCheckedChipId()) {
+            case R.id.chip_home_garden:
+                intent = new Intent(SearchAdvertisements.this, MainActivity.class);
+                intent.putExtra("url", UrlOfPages.HOME_GARDEN.getUrl());
+                startActivity(intent);
+                break;
+            case R.id.electronics:
+                intent = new Intent(SearchAdvertisements.this, MainActivity.class);
+                intent.putExtra("url", UrlOfPages.ELECTRONICS.getUrl());
+                startActivity(intent);
+                break;
+            case R.id.transport_parts:
+                intent = new Intent(SearchAdvertisements.this, MainActivity.class);
+                intent.putExtra("url", UrlOfPages.TRANSPORT_PARTS.getUrl());
+                startActivity(intent);
+                break;
+            case R.id.business_services:
+                intent = new Intent(SearchAdvertisements.this, MainActivity.class);
+                intent.putExtra("url", UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
+                startActivity(intent);
+                break;
+            case R.id.fashion_style:
+                intent = new Intent(SearchAdvertisements.this, MainActivity.class);
+                intent.putExtra("url", UrlOfPages.FASHION_AND_STYLE.getUrl());
+                startActivity(intent);
+                break;
+            case R.id.hobbies_leisure:
+                intent = new Intent(SearchAdvertisements.this, MainActivity.class);
+                intent.putExtra("url", UrlOfPages.HOBBIES_AND_LEISURE.getUrl());
+                startActivity(intent);
+                break;
         }
     }
 
+
+
+
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
         }
