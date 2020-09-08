@@ -19,17 +19,19 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Advertisement> advertisements;
-
+   // private static final String SERVER_IP ="91.235.129.33";
+    private static final String SERVER_IP ="10.0.2.2";
+    private static final int PORT =8080;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("OLX бесплатно");
         setSupportActionBar(toolbar);
         String Url = getIntent().getStringExtra("url");
-
+        connectToServer(Url);
     }
 
     /**
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        ConnectServer connectServer = new ConnectServer("91.235.129.33", 8080);
+                        ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
                         advertisements = new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements();
                     } catch (IOException e) {
                         e.printStackTrace();
