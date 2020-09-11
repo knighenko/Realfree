@@ -3,13 +3,19 @@ package com.knighenko.realfree.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.knighenko.realfree.R;
+import com.knighenko.realfree.adapter.AdvAdapter;
 import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.model.ConnectServer;
 import com.knighenko.realfree.model.JsonToObject;
@@ -22,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String SERVER_IP ="91.235.129.33";
    // private static final String SERVER_IP ="10.0.2.2";
     private static final int PORT =8080;
+    private RecyclerView listAdvRecyclerView;
+    private AdvAdapter advAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +67,37 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            initRecyclerView();
+                        }
+                    });
                 }
             }).start();
         }
 
     }
 
+/**Метод инициализирует список обьявлений из выбранной рубрики*/
+    private void initRecyclerView() {
+        listAdvRecyclerView = findViewById(R.id.listAdvRecyclerView);
+        listAdvRecyclerView.setHasFixedSize(true);
+        listAdvRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        AdvAdapter.OnAdvertisementClickListener onAdvertisementClickListener=new AdvAdapter.OnAdvertisementClickListener() {
+            @Override
+            public void onAdvClick(Advertisement advertisement) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(advertisement.getUrl()));
+                startActivity(intent);
 
+            }
+        };
+        advAdapter = new AdvAdapter(onAdvertisementClickListener);
+        advAdapter.setListAdv(advertisements);
+        listAdvRecyclerView.setAdapter(advAdapter);
+
+    }
     /**
      * Метод реагирует на нажатие кнопки меню, в данном случае кнопки поиска
      */

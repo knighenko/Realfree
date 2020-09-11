@@ -10,6 +10,14 @@
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
     </style>
+    <style name="TextViewAdv">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="chipSurfaceColor">@color/chip_color</item>
+        <item name="android:textAppearance">@style/chipTextAppearance</item>
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="android:textAlignment">center</item>
+      </style>
 
     <style name="Chip" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:layout_width">match_parent</item>
