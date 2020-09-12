@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         String Url = getIntent().getStringExtra("url");
         connectToServer(Url);
+
     }
 
     /**
