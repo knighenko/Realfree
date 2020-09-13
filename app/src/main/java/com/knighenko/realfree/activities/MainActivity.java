@@ -8,9 +8,16 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -23,6 +30,7 @@ import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.model.ConnectServer;
 import com.knighenko.realfree.model.JsonToObject;
 import com.knighenko.realfree.model.UrlOfPages;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private static final int PORT = 8080;
     private RecyclerView listAdvRecyclerView;
     private AdvAdapter advAdapter;
-    private SharedPreferences myPreferences;
+    private SQLiteDatabase myDB;
+    public static final  String CHANNEL_1 = "channel1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,41 +55,58 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("OLX бесплатно");
         setSupportActionBar(toolbar);
+        this.createNotificationChannels();
+        createDB();
+
         String Url = getIntent().getStringExtra("url");
         connectToServerStart(Url);
-
-
         readFromServer(UrlOfPages.HOME_GARDEN.getUrl());
+        printDB();
+    }
 
+
+    /**
+     * Метод создает базу данных
+     */
+    private void createDB() {
+        myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+        myDB.execSQL("CREATE TABLE IF NOT EXISTS advertisement ( title TEXT, url TEXT, srcUrl Text)");
 
     }
 
     /**
-     * Метод сохраняет данные поиска на устройство с выбранной рубрики
+     * Метод добавляет элементы в базу данных
      */
-    private void saveToAndroidFirst(ArrayList<Advertisement> myAdvertisements) {
-        this.myPreferences
-                = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        SharedPreferences.Editor myEditor1 = myPreferences.edit();
-        for (Advertisement adv : myAdvertisements) {
-            myEditor1.putString(adv.getTitle(), adv.getUrl());
-        }
-        myEditor1.commit();
+    private void addToDB(Advertisement adv, SQLiteDatabase myDB) {
+        ContentValues row = new ContentValues();
+        row.put("title", adv.getTitle());
+        row.put("url", adv.getUrl());
+        row.put("srcUrl", adv.getImageSrc());
+        myDB.insert("advertisement", null, row);
+
     }
 
-    /**
-     * Метод сохраняет данные поиска на устройство с выбранной рубрики через каждые 15 сек.
-     */
-    private void saveToAndroidFifteenSec(ArrayList<Advertisement> myAdvertisements) {
-        SharedPreferences myPreferences2
-                = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        SharedPreferences.Editor myEditor2 = myPreferences2.edit();
-        for (Advertisement adv : myAdvertisements) {
-            myEditor2.putString(adv.getTitle(), adv.getUrl());
-        }
-        myEditor2.commit();
-    }
-
+/**Метод печатает в консоль все записи из базы*/
+private void printDB(){
+    Cursor cursor=myDB.rawQuery("select title, url, srcUrl from advertisement", null);
+    while (cursor.moveToNext()){
+        System.out.println(cursor.getString(0)+" "+cursor.getString(1)+" "+cursor.getString(2));
+      }
+    cursor.close();
+}
+/**Deleted*/
+private void createNotificationChannels()  {
+    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        NotificationChannel channel1 = new NotificationChannel(
+                CHANNEL_1,
+                "Channel 1",
+                NotificationManager.IMPORTANCE_HIGH
+        );
+        channel1.setDescription("This is channel 1");
+        NotificationManager manager = this.getSystemService(NotificationManager.class);
+        manager.createNotificationChannel(channel1);
+          }
+}
     /**
      * Метод посылает каждые 15 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
      */
@@ -93,20 +119,20 @@ public class MainActivity extends AppCompatActivity {
                 ConnectServer connectServer = null;
                 try {
                     connectServer = new ConnectServer(SERVER_IP, PORT);
+                    System.out.println("*******************" + Calendar.getInstance().getTime() + "////////////////////////////////////////");
                     for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
-                        if ((myPreferences!=null)&&(myPreferences.contains(adv.getTitle())))
+
                         {
-
-                            NotificationCompat.Builder builder =
-                                    new NotificationCompat.Builder(MainActivity.this, adv.getTitle())
-                                            .setSmallIcon(R.drawable.ic_launcher_foreground)
-                                            .setContentTitle("Напоминание")
-                                            .setContentText("Пора покормить кота")
-                                            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-                            NotificationManagerCompat notificationManager =
-                                    NotificationManagerCompat.from(MainActivity.this);
-                            notificationManager.notify(101, builder.build());
+                            Notification notification = new NotificationCompat.Builder(MainActivity.this, MainActivity.CHANNEL_1)
+                                    .setSmallIcon(R.drawable.no_image)
+                                    .setContentTitle(adv.getTitle())
+                                    .setContentText("Приехало")
+                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                                    .build();
+                            int notificationId = 1;
+                            NotificationManagerCompat notificationManagerCompat= NotificationManagerCompat.from(MainActivity.this);
+                            notificationManagerCompat.notify(notificationId, notification);
                         }
                     }
 
@@ -140,7 +166,9 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
                         advertisements = new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements();
-                        saveToAndroidFirst(advertisements);
+                        for (Advertisement adv:advertisements){
+                            addToDB(adv,myDB);
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
