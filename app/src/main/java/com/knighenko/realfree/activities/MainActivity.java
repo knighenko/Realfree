@@ -13,16 +13,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.knighenko.realfree.R;
 import com.knighenko.realfree.adapter.AdvAdapter;
@@ -46,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView listAdvRecyclerView;
     private AdvAdapter advAdapter;
     private SQLiteDatabase myDB;
-    public static final  String CHANNEL_1 = "channel1";
+    public static final String CHANNEL_1 = "channel1";
+    private static int notificationId = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +57,14 @@ public class MainActivity extends AppCompatActivity {
         createDB();
 
         String Url = getIntent().getStringExtra("url");
-        connectToServerStart(Url);
-        readFromServer(UrlOfPages.HOME_GARDEN.getUrl());
-        printDB();
+        connectToServerSearch(Url);
+        readFromServerFefteenSec(UrlOfPages.HOME_GARDEN.getUrl());
+
     }
 
 
     /**
-     * Метод создает базу данных
+     * Метод создает базу данных или открывает созданную
      */
     private void createDB() {
         myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
@@ -86,31 +84,52 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-/**Метод печатает в консоль все записи из базы*/
-private void printDB(){
-    Cursor cursor=myDB.rawQuery("select title, url, srcUrl from advertisement", null);
-    while (cursor.moveToNext()){
-        System.out.println(cursor.getString(0)+" "+cursor.getString(1)+" "+cursor.getString(2));
-      }
-    cursor.close();
-}
-/**Deleted*/
-private void createNotificationChannels()  {
-    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        NotificationChannel channel1 = new NotificationChannel(
-                CHANNEL_1,
-                "Channel 1",
-                NotificationManager.IMPORTANCE_HIGH
-        );
-        channel1.setDescription("This is channel 1");
-        NotificationManager manager = this.getSystemService(NotificationManager.class);
-        manager.createNotificationChannel(channel1);
-          }
-}
+    /**
+     * Метод печатает в консоль все записи из базы
+     */
+    private void printDB() {
+        Cursor cursor = myDB.rawQuery("select title, url, srcUrl from advertisement", null);
+        while (cursor.moveToNext()) {
+            System.out.println(cursor.getString(0) + " " + cursor.getString(1) + " " + cursor.getString(2));
+        }
+        cursor.close();
+    }
+
+    /**
+     * Метод проверяет на наличие записи по title в базе, true - элемент присутствует!
+     */
+    private boolean checkInDB(String title) {
+        Cursor cursor = myDB.rawQuery("SELECT EXISTS (select * from  advertisement WHERE title = \"" + title + "\"  LIMIT 1)", null);
+        while (cursor.moveToNext()) {
+            if (cursor.getInt(0) == 1) {
+                cursor.close();
+                return true;
+            }
+        }
+        cursor.close();
+        return false;
+    }
+
+    /**
+     * Deleted
+     */
+    private void createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel1 = new NotificationChannel(
+                    CHANNEL_1,
+                    "Channel 1",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            channel1.setDescription("This is channel 1");
+            NotificationManager manager = this.getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel1);
+        }
+    }
+
     /**
      * Метод посылает каждые 15 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
      */
-    private void readFromServer(final String Url) {
+    private void readFromServerFefteenSec(final String Url) {
         int delay = 1000; // delay for 1 sec.
         int period = 15000; // repeat every 15 sec.
         Timer timer = new Timer();
@@ -121,8 +140,8 @@ private void createNotificationChannels()  {
                     connectServer = new ConnectServer(SERVER_IP, PORT);
                     System.out.println("*******************" + Calendar.getInstance().getTime() + "////////////////////////////////////////");
                     for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
-
-                        {
+                        if (!checkInDB(adv.getTitle())) {
+                            addToDB(adv,myDB);
                             Notification notification = new NotificationCompat.Builder(MainActivity.this, MainActivity.CHANNEL_1)
                                     .setSmallIcon(R.drawable.no_image)
                                     .setContentTitle(adv.getTitle())
@@ -130,9 +149,10 @@ private void createNotificationChannels()  {
                                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                                     .build();
-                            int notificationId = 1;
-                            NotificationManagerCompat notificationManagerCompat= NotificationManagerCompat.from(MainActivity.this);
+
+                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MainActivity.this);
                             notificationManagerCompat.notify(notificationId, notification);
+                            notificationId++;
                         }
                     }
 
@@ -157,7 +177,7 @@ private void createNotificationChannels()  {
      * Метод соединяется первый раз с сервером и получает массив обьявлений и записывает данные в SharedPreferences
      */
 
-    private void connectToServerStart(final String Url) {
+    private void connectToServerSearch(final String Url) {
 
         if (Url != null) {
             new Thread(new Runnable() {
@@ -166,8 +186,8 @@ private void createNotificationChannels()  {
                     try {
                         ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
                         advertisements = new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements();
-                        for (Advertisement adv:advertisements){
-                            addToDB(adv,myDB);
+                        for (Advertisement adv : advertisements) {
+                            addToDB(adv, myDB);
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
