@@ -27,6 +27,7 @@ import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.model.ConnectServer;
 import com.knighenko.realfree.model.JsonToObject;
 import com.knighenko.realfree.model.UrlOfPages;
+import com.knighenko.realfree.service.ServerService;
 
 
 import java.io.IOException;
@@ -58,10 +59,27 @@ public class MainActivity extends AppCompatActivity {
 
         String Url = getIntent().getStringExtra("url");
         connectToServerSearch(Url);
-        readFromServerFefteenSec(UrlOfPages.HOME_GARDEN.getUrl());
+        startTracking(UrlOfPages.HOME_GARDEN.getUrl());
+          //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
 
     }
 
+    /**
+     * Метод запускает сервис по отслеживанию новых обьявлений
+     */
+    public void startTracking(String url) {
+        Intent myIntent = new Intent(MainActivity.this, ServerService.class);
+        myIntent.putExtra("url", url);
+        this.startService(myIntent);
+    }
+
+    /**
+     * Метод останавливает сервис по отслеживанию новых обьявлений
+     */
+    public void stopTracking() {
+        Intent myIntent = new Intent(MainActivity.this, ServerService.class);
+        this.stopService(myIntent);
+    }
 
     /**
      * Метод создает базу данных или открывает созданную
@@ -141,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("*******************" + Calendar.getInstance().getTime() + "////////////////////////////////////////");
                     for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
                         if (!checkInDB(adv.getTitle())) {
-                            addToDB(adv,myDB);
+                            addToDB(adv, myDB);
                             Notification notification = new NotificationCompat.Builder(MainActivity.this, MainActivity.CHANNEL_1)
-                                    .setSmallIcon(R.drawable.no_image)
+                                    .setSmallIcon(R.drawable.ic_launcher_foreground)
                                     .setContentTitle(adv.getTitle())
                                     .setContentText("Приехало")
                                     .setPriority(NotificationCompat.PRIORITY_HIGH)
