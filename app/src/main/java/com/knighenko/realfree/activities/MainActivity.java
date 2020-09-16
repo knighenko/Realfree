@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,18 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
         String Url = getIntent().getStringExtra("url");
         connectToServerSearch(Url);
-        startTracking(UrlOfPages.HOME_GARDEN.getUrl());
-          //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
+
+        startTracking(UrlOfPages.HOME_GARDEN);
+        //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
 
     }
 
     /**
      * Метод запускает сервис по отслеживанию новых обьявлений
      */
-    public void startTracking(String url) {
-        Intent myIntent = new Intent(MainActivity.this, ServerService.class);
-        myIntent.putExtra("url", url);
-        this.startService(myIntent);
+    public void startTracking(final UrlOfPages object) {
+
+                Intent myIntent = new Intent(MainActivity.this, ServerService.class);
+                myIntent.putExtra("url", object.getUrl());
+                myIntent.putExtra("titleOfUrl", object.getTitle());
+                ContextCompat.startForegroundService(getApplicationContext(), myIntent);
+
     }
 
     /**
