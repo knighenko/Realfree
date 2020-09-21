@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextViewAdvDescription">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="chipSurfaceColor">@color/chip_color</item>
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="android:justificationMode">inter_word</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textSize">20sp</item>
+
+    </style>
+</resources>

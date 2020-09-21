@@ -1,5 +1,6 @@
 package com.knighenko.realfree.adapter;
 
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,13 +61,14 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
 
     class AdvListHolder extends RecyclerView.ViewHolder {
         private TextView title;
-        private TextView url;
-        private TextView imageSrc;
+        private TextView description;
+
         private ImageView imageView;
 
         public AdvListHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.titleAdv);
+            description=itemView.findViewById(R.id.textViewDescription);
             imageView = itemView.findViewById(R.id.imageViewAdv);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -79,6 +81,8 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
 
         public void bind(Advertisement adv) {
             title.setText(adv.getTitle());
+            title.setPaintFlags(title.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            description.setText(adv.getDescription());
             String urlImg = adv.getImageSrc();
             paintImg(urlImg);
         }

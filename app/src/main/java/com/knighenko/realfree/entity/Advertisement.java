@@ -1,12 +1,22 @@
 package com.knighenko.realfree.entity;
 
+
 public class Advertisement {
     private String title;
     private String url;
     private String imageSrc;
+    private String description;
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setTitle(String title) {
@@ -31,10 +41,16 @@ public class Advertisement {
 
     @Override
     public String toString() {
-        return "entity.Advertisement{" +
+        StringBuilder stringBuffer = new StringBuilder("entity.Advertisement{");
+        stringBuffer.append("title='").append(title).append('\'').append(", url='").append(url).append('\'').
+                append(", imageSrc='").append(imageSrc).append('\'').append(", description='").append(description).append('\'').append('}');
+      /*  return "entity.Advertisement{" +
                 "title='" + title + '\'' +
                 ", url='" + url + '\'' +
                 ", imageSrc='" + imageSrc + '\'' +
-                '}';
+                '}';*/
+         return stringBuffer.toString();
     }
+
+
 }

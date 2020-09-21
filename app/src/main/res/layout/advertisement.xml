@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/titleAdv"
-        style="@style/TextViewAdv"
+        style="@style/TextViewAdvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
       <ImageView
@@ -17,10 +17,18 @@
         android:layout_width="match_parent"
         android:layout_height="205dp"
           android:paddingBottom="5dp"/>
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        style="@style/TextViewAdvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="#DAA24E"
-
         />
+
 </LinearLayout>
