@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.knighenko.realfree.R;
+import com.knighenko.realfree.activities.AdvertisementActivity;
 import com.knighenko.realfree.activities.MainActivity;
 import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.model.ConnectServer;
@@ -34,7 +35,8 @@ public class ServerService extends Service {
     private static final int PORT = 8080;
     private static int notificationId = 1;
     public static final String CHANNEL_ID = "ForegroundServiceChannel";
-      public ServerService() {
+
+    public ServerService() {
 
     }
 
@@ -60,8 +62,8 @@ public class ServerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-       String url= intent.getStringExtra("url");
-       String title=intent.getStringExtra("titleOfUrl");
+        String url = intent.getStringExtra("url");
+        String title = intent.getStringExtra("titleOfUrl");
         createNotificationChannel();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -74,7 +76,7 @@ public class ServerService extends Service {
                 .build();
         startForeground(1, notification);
         readFromServerFefteenSec(url);
-        return START_STICKY;
+        return START_STICKY_COMPATIBILITY;
     }
 
     @Override
@@ -87,6 +89,7 @@ public class ServerService extends Service {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
     /**
      * Метод посылает каждые 30 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
      */
@@ -99,16 +102,27 @@ public class ServerService extends Service {
                 ConnectServer connectServer = null;
                 try {
                     connectServer = new ConnectServer(SERVER_IP, PORT);
-                    System.out.println("*******************" + Calendar.getInstance().getTime() + "////////////////////////////////////////"+Url);
+
                     for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
                         if (!checkInDB(adv.getTitle())) {
-                            addToDB(adv,myDB);
+                            addToDB(adv, myDB);
+
+                            Intent advIntent = new Intent(getApplicationContext(),
+                                    AdvertisementActivity.class);
+                            advIntent.putExtra("title", adv.getTitle());
+                            advIntent.putExtra("url", adv.getUrl());
+                            advIntent.putExtra("description", adv.getDescription());
+                            advIntent.putExtra("src", adv.getImageSrc());
+
+                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
+                                    0, advIntent, 0);
+
                             Notification notification = new NotificationCompat.Builder(getBaseContext(), MainActivity.CHANNEL_1)
                                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                                     .setContentTitle(adv.getTitle())
-                                    .setContentText("Приехало")
                                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                                    .setAutoCancel(true)
                                     .build();
 
                             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getBaseContext());
@@ -124,6 +138,7 @@ public class ServerService extends Service {
         }, delay, period);
 
     }
+
     /**
      * Метод создает базу данных или открывает созданную
      */
@@ -132,6 +147,7 @@ public class ServerService extends Service {
         myDB.execSQL("CREATE TABLE IF NOT EXISTS advertisement ( title TEXT, url TEXT, srcUrl Text)");
 
     }
+
     /**
      * Метод добавляет элементы в базу данных
      */
@@ -143,6 +159,7 @@ public class ServerService extends Service {
         myDB.insert("advertisement", null, row);
 
     }
+
     /**
      * Метод проверяет на наличие записи по title в базе, true - элемент присутствует!
      */

@@ -67,7 +67,7 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
 
         public AdvListHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.titleAdv);
+            title = itemView.findViewById(R.id.textViewTitleAdv);
             description=itemView.findViewById(R.id.textViewDescription);
             imageView = itemView.findViewById(R.id.imageViewAdv);
             itemView.setOnClickListener(new View.OnClickListener() {

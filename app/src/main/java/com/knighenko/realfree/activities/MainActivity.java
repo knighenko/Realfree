@@ -55,13 +55,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("OLX бесплатно");
         setSupportActionBar(toolbar);
-        this.createNotificationChannels();
-        createDB();
-
+               createDB();
         String Url = getIntent().getStringExtra("url");
         connectToServerSearch(Url);
 
-        startTracking(UrlOfPages.HOME_GARDEN);
+        startTracking(UrlOfPages.FASHION_AND_STYLE);
         //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
 
     }
@@ -133,21 +131,7 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    /**
-     * Deleted
-     */
-    private void createNotificationChannels() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel1 = new NotificationChannel(
-                    CHANNEL_1,
-                    "Channel 1",
-                    NotificationManager.IMPORTANCE_HIGH
-            );
-            channel1.setDescription("This is channel 1");
-            NotificationManager manager = this.getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel1);
-        }
-    }
+
 
     /**
      * Метод посылает каждые 15 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
