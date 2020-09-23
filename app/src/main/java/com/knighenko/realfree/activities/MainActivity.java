@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private AdvAdapter advAdapter;
     private SQLiteDatabase myDB;
     public static final String CHANNEL_1 = "channel1";
+    public static final String CHANNEL_2 = "channel2";
     private static int notificationId = 1;
 
     @Override
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         String Url = getIntent().getStringExtra("url");
         connectToServerSearch(Url);
 
-        startTracking(UrlOfPages.FASHION_AND_STYLE);
+        startTracking(UrlOfPages.HOBBIES_AND_LEISURE);
         //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
 
     }
@@ -155,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
                                     .setContentText("Приехало")
                                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                                    .build();
+                                    .setAutoCancel(true)
+                            .build();
 
                             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MainActivity.this);
                             notificationManagerCompat.notify(notificationId, notification);

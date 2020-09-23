@@ -107,21 +107,22 @@ public class ServerService extends Service {
                         if (!checkInDB(adv.getTitle())) {
                             addToDB(adv, myDB);
 
-                            Intent advIntent = new Intent(getApplicationContext(),
+                            Intent advIntent = new Intent(getBaseContext(),
                                     AdvertisementActivity.class);
-                            advIntent.putExtra("title", adv.getTitle());
                             advIntent.putExtra("url", adv.getUrl());
+                            advIntent.putExtra("title", adv.getTitle());
                             advIntent.putExtra("description", adv.getDescription());
                             advIntent.putExtra("src", adv.getImageSrc());
 
-                            PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                                    0, advIntent, 0);
-
-                            Notification notification = new NotificationCompat.Builder(getBaseContext(), MainActivity.CHANNEL_1)
+                            PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),
+                                    notificationId, advIntent, 0);
+                            Notification notification = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
                                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                                     .setContentTitle(adv.getTitle())
+                                    .setContentText("Приехало")
                                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                                    .setContentIntent(pendingIntent)
                                     .setAutoCancel(true)
                                     .build();
 
