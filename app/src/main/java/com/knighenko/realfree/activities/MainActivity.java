@@ -40,13 +40,12 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Advertisement> advertisements;
     private static final String SERVER_IP = "91.235.129.33";
-    // private static final String SERVER_IP ="10.0.2.2";
+   //private static final String SERVER_IP ="10.0.2.2";
     private static final int PORT = 8080;
     private RecyclerView listAdvRecyclerView;
     private AdvAdapter advAdapter;
     private SQLiteDatabase myDB;
-    public static final String CHANNEL_1 = "channel1";
-    public static final String CHANNEL_2 = "channel2";
+
     private static int notificationId = 1;
 
     @Override
@@ -60,20 +59,20 @@ public class MainActivity extends AppCompatActivity {
         String Url = getIntent().getStringExtra("url");
         connectToServerSearch(Url);
 
-        startTracking(UrlOfPages.HOBBIES_AND_LEISURE);
+        startTracking(UrlOfPages.HOME_GARDEN);
         //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
 
     }
 
     /**
-     * Метод запускает сервис по отслеживанию новых обьявлений
+     * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
      */
     public void startTracking(final UrlOfPages object) {
 
                 Intent myIntent = new Intent(MainActivity.this, ServerService.class);
                 myIntent.putExtra("url", object.getUrl());
                 myIntent.putExtra("titleOfUrl", object.getTitle());
-                ContextCompat.startForegroundService(getApplicationContext(), myIntent);
+                ContextCompat.startForegroundService(MainActivity.this, myIntent);
 
     }
 
@@ -133,55 +132,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-    /**
-     * Метод посылает каждые 15 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
-     */
-    private void readFromServerFefteenSec(final String Url) {
-        int delay = 1000; // delay for 1 sec.
-        int period = 15000; // repeat every 15 sec.
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                ConnectServer connectServer = null;
-                try {
-                    connectServer = new ConnectServer(SERVER_IP, PORT);
-                    System.out.println("*******************" + Calendar.getInstance().getTime() + "////////////////////////////////////////");
-                    for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
-                        if (!checkInDB(adv.getTitle())) {
-                            addToDB(adv, myDB);
-                            Notification notification = new NotificationCompat.Builder(MainActivity.this, MainActivity.CHANNEL_1)
-                                    .setSmallIcon(R.drawable.ic_launcher_foreground)
-                                    .setContentTitle(adv.getTitle())
-                                    .setContentText("Приехало")
-                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                                    .setAutoCancel(true)
-                            .build();
-
-                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(MainActivity.this);
-                            notificationManagerCompat.notify(notificationId, notification);
-                            notificationId++;
-                        }
-                    }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, delay, period);
-
-    }
-
-    /**
-     * Метод создает меню
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.user_menu, menu);
-        return true;
-    }
-
     /**
      * Метод соединяется первый раз с сервером и получает массив обьявлений и записывает данные в SharedPreferences
      */
@@ -234,16 +184,32 @@ public class MainActivity extends AppCompatActivity {
         listAdvRecyclerView.setAdapter(advAdapter);
 
     }
+    /**
+     * Метод создает меню
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.user_menu, menu);
+        return true;
+    }
 
     /**
      * Метод реагирует на нажатие кнопки меню, в данном случае кнопки поиска
      */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_search) {
-            Intent intent = new Intent(this, SearchAdvertisements.class);
-            startActivity(intent);
+        Intent intent;
+        switch (item.getItemId()){
+            case  R.id.action_search:
+                intent = new Intent(this, SearchAdvertisements.class);
+                startActivity(intent);
+                return  true;
+            case  R.id.favourite_search:
+                intent = new Intent(this, FavouriteSearch.class);
+                startActivity(intent);
+                return  true;
         }
-        return true;
+
+        return false;
     }
 }

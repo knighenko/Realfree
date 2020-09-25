@@ -6,10 +6,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 
@@ -24,7 +26,6 @@ import com.knighenko.realfree.model.ConnectServer;
 import com.knighenko.realfree.model.JsonToObject;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -33,22 +34,26 @@ public class ServerService extends Service {
     private static final String SERVER_IP = "91.235.129.33";
     // private static final String SERVER_IP ="10.0.2.2";
     private static final int PORT = 8080;
-    private static int notificationId = 1;
-    public static final String CHANNEL_ID = "ForegroundServiceChannel";
+    private static int notificationId = 2;
+    public static final String CHANNEL_1 = "ForegroundServiceChannel";
+
 
     public ServerService() {
 
     }
 
-    private void createNotificationChannel() {
+    private void createNotificationChannel1() {
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
-                    CHANNEL_ID,
+                    CHANNEL_1,
                     "Foreground Service Channel",
-                    NotificationManager.IMPORTANCE_DEFAULT
+                    NotificationManager.IMPORTANCE_HIGH
             );
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(serviceChannel);
+
+            notificationManager.createNotificationChannel(serviceChannel);
+
         }
     }
 
@@ -64,11 +69,11 @@ public class ServerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String url = intent.getStringExtra("url");
         String title = intent.getStringExtra("titleOfUrl");
-        createNotificationChannel();
+        createNotificationChannel1();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_1)
                 .setContentTitle("Мониторинг обьявлений OLX")
                 .setContentText(title)
                 .setSmallIcon(R.mipmap.ic_message)
@@ -105,29 +110,34 @@ public class ServerService extends Service {
 
                     for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
                         if (!checkInDB(adv.getTitle())) {
+
                             addToDB(adv, myDB);
 
                             Intent advIntent = new Intent(getBaseContext(),
                                     AdvertisementActivity.class);
-                            advIntent.putExtra("url", adv.getUrl());
+                            advIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            advIntent.putExtra("urlAdv", adv.getUrl());
                             advIntent.putExtra("title", adv.getTitle());
                             advIntent.putExtra("description", adv.getDescription());
-                            advIntent.putExtra("src", adv.getImageSrc());
+                            advIntent.putExtra("srcUrl", adv.getImageSrc());
 
-                            PendingIntent pendingIntent = PendingIntent.getActivity(getBaseContext(),
-                                    notificationId, advIntent, 0);
-                            Notification notification = new NotificationCompat.Builder(getBaseContext(), CHANNEL_ID)
+                            PendingIntent pendingIntent = PendingIntent.getActivity(ServerService.this,
+                                    notificationId, advIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                            Notification notification = new NotificationCompat.Builder(ServerService.this, CHANNEL_1)
                                     .setSmallIcon(R.drawable.ic_launcher_foreground)
                                     .setContentTitle(adv.getTitle())
-                                    .setContentText("Приехало")
-                                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                    .setContentText(adv.getDescription())
+                                    .setPriority(NotificationCompat.PRIORITY_MAX)
                                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                                     .setContentIntent(pendingIntent)
                                     .setAutoCancel(true)
                                     .build();
 
-                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getBaseContext());
-                            notificationManagerCompat.notify(notificationId, notification);
+
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                            notificationManager.notify(notificationId, notification);
                             notificationId++;
                         }
                     }
@@ -141,7 +151,7 @@ public class ServerService extends Service {
     }
 
     /**
-     * Метод создает базу данных или открывает созданную
+     * Метод создает базу данных или открывает созданную + создает таблицу advertisement
      */
     private void createDB() {
         myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);

@@ -33,7 +33,7 @@ public class SearchAdvertisements extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_advertisements);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Выбор рубрики");
+        toolbar.setTitle("Поиск по рубрикам");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -52,34 +52,42 @@ public class SearchAdvertisements extends AppCompatActivity {
     private void chekChip(ChipGroup chipGroup) {
         switch (chipGroup.getCheckedChipId()) {
             case R.id.chip_home_garden:
+                Toast.makeText(this, "Поиск в рубрике "+UrlOfPages.HOME_GARDEN.getTitle(), Toast.LENGTH_LONG).show();
                 intent = new Intent(SearchAdvertisements.this, MainActivity.class);
                 intent.putExtra("url", UrlOfPages.HOME_GARDEN.getUrl());
                 startActivity(intent);
+
                 break;
             case R.id.electronics:
+                Toast.makeText(this, "Поиск в рубрике "+UrlOfPages.ELECTRONICS.getTitle(), Toast.LENGTH_LONG).show();
                 intent = new Intent(SearchAdvertisements.this, MainActivity.class);
                 intent.putExtra("url", UrlOfPages.ELECTRONICS.getUrl());
                 startActivity(intent);
+
                 break;
             case R.id.transport_parts:
                 intent = new Intent(SearchAdvertisements.this, MainActivity.class);
                 intent.putExtra("url", UrlOfPages.TRANSPORT_PARTS.getUrl());
                 startActivity(intent);
+                Toast.makeText(this, "Поиск в рубрике "+UrlOfPages.TRANSPORT_PARTS.getTitle(), Toast.LENGTH_LONG).show();
                 break;
             case R.id.business_services:
                 intent = new Intent(SearchAdvertisements.this, MainActivity.class);
                 intent.putExtra("url", UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
                 startActivity(intent);
+                Toast.makeText(this, "Поиск в рубрике "+UrlOfPages.BUSINESS_AND_SERVICES.getTitle(), Toast.LENGTH_LONG).show();
                 break;
             case R.id.fashion_style:
                 intent = new Intent(SearchAdvertisements.this, MainActivity.class);
                 intent.putExtra("url", UrlOfPages.FASHION_AND_STYLE.getUrl());
                 startActivity(intent);
+                Toast.makeText(this, "Поиск в рубрике "+UrlOfPages.FASHION_AND_STYLE.getTitle(), Toast.LENGTH_LONG).show();
                 break;
             case R.id.hobbies_leisure:
                 intent = new Intent(SearchAdvertisements.this, MainActivity.class);
                 intent.putExtra("url", UrlOfPages.HOBBIES_AND_LEISURE.getUrl());
                 startActivity(intent);
+                Toast.makeText(this, "Поиск в рубрике "+UrlOfPages.HOBBIES_AND_LEISURE.getTitle(), Toast.LENGTH_LONG).show();
                 break;
         }
     }

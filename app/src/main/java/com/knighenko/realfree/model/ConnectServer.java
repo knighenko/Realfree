@@ -26,6 +26,7 @@ public class ConnectServer {
             outputStream.flush();
 
             inputStream = new DataInputStream(socket.getInputStream());
+
             String message = inputStream.readUTF();
             System.out.println("Response from server is: " + message);
             inputStream.close();

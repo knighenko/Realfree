@@ -53,7 +53,6 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
     }
 
     public void setListAdv(Collection<Advertisement> advertisements) {
-        System.err.println("Arrays are " + advertisements.size());
         this.advertisements.addAll(advertisements);
         notifyDataSetChanged();
 
@@ -69,7 +68,7 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
             super(itemView);
             title = itemView.findViewById(R.id.textViewTitleAdv);
             description=itemView.findViewById(R.id.textViewDescription);
-            imageView = itemView.findViewById(R.id.imageViewAdv);
+            imageView = itemView.findViewById(R.id.smallImageViewAdv);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

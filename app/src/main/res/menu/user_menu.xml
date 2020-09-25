@@ -6,6 +6,15 @@
     app:showAsAction="always"
     android:icon="@drawable/baseline_search_white_24"
     android:title="@string/search_adv" />
-
+    <item
+        android:id="@+id/favourite_search"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_favourite_search"
+        android:title="@string/favourite_search"></item>
+    <item
+        android:id="@+id/favourite_adv"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_favourite"
+        android:title="@string/favourite_adv"></item>
 
 </menu>

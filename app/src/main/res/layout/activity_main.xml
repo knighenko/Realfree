@@ -18,7 +18,6 @@
         android:layout_weight="1"
         android:background="?attr/colorPrimary"
         android:theme="?attr/actionBarTheme"
-
         tools:ignore="MissingConstraints" />
 
     <androidx.recyclerview.widget.RecyclerView
