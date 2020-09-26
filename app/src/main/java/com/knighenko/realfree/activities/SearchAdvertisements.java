@@ -10,15 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.R;
-import com.knighenko.realfree.model.ConnectServer;
-import com.knighenko.realfree.model.JsonToObject;
 import com.knighenko.realfree.model.UrlOfPages;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
