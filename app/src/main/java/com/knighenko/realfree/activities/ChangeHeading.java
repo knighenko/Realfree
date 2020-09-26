@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.knighenko.realfree.R;
 
@@ -28,5 +29,8 @@ public class ChangeHeading extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+
+    public void changeBtn(View view) {
     }
 }

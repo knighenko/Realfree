@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,6 +23,7 @@ public class AdvertisementActivity extends AppCompatActivity {
     private ImageView imageView;
     private static final String LOG = "MyApp";
     private Toolbar toolbar;
+    private String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class AdvertisementActivity extends AppCompatActivity {
         this.description = findViewById(R.id.textViewDescription);
         this.imageView = findViewById(R.id.bigImageViewAdv);
         this.toolbar = findViewById(R.id.toolbar);
+        this.url=getIntent().getStringExtra("urlAdv");
         toolbar.setTitle("OLX бесплатно");
         setSupportActionBar(toolbar);
         title.setText(getIntent().getStringExtra("title"));
@@ -45,6 +49,7 @@ public class AdvertisementActivity extends AppCompatActivity {
             Picasso.get().load(urlImg).resize(300, 300).centerCrop().into(imageView);
         }
     }
+
     /**
      * Метод создает меню
      */
@@ -53,6 +58,7 @@ public class AdvertisementActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.user_menu, menu);
         return true;
     }
+
     /**
      * Метод реагирует на нажатие кнопки меню, в данном случае кнопки поиска
      */
@@ -63,5 +69,11 @@ public class AdvertisementActivity extends AppCompatActivity {
             startActivity(intent);
         }
         return true;
+    }
+
+    public void advClick(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 }

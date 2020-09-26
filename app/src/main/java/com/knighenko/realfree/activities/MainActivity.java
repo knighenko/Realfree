@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         String Url = getIntent().getStringExtra("url");
         connectToServerSearch(Url);
 
-        startTracking(UrlOfPages.HOME_GARDEN);
+        startTracking(UrlOfPages.ELECTRONICS);
         //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
 
     }

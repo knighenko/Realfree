@@ -23,6 +23,7 @@
         android:id="@+id/bigImageViewAdv"
         android:layout_width="match_parent"
         android:layout_height="300dp"
+        android:onClick="advClick"
         android:paddingBottom="5dp"/>
 
     <TextView
