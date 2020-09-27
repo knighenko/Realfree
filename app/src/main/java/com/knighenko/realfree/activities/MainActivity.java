@@ -48,14 +48,14 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("OLX бесплатно");
         setSupportActionBar(toolbar);
         createDB();
-        if (savedInstanceState==null||!savedInstanceState.containsKey("Advertisements")) {
+        if (savedInstanceState == null || !savedInstanceState.containsKey("Advertisements")) {
             String Url = getIntent().getStringExtra("url");
             connectToServerSearch(Url);
+        } else {
+            advertisements = savedInstanceState.getParcelableArrayList("Advertisements");
+            initRecyclerView();
         }
-        else {
-            advertisements=savedInstanceState.getParcelableArrayList("Advertisements");
-        }
-        initRecyclerView();
+
         startTracking(UrlOfPages.HOME_GARDEN);
         //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
 
@@ -156,8 +156,12 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-
-
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            initRecyclerView();
+                        }
+                    });
 
 
                 }

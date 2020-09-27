@@ -29,6 +29,17 @@ public class Advertisement implements Parcelable {
         }
     };
 
+    public Advertisement() {
+
+    }
+
+    public Advertisement(String title, String url, String imageSrc, String description) {
+        this.title = title;
+        this.url = url;
+        this.imageSrc = imageSrc;
+        this.description = description;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -71,7 +82,7 @@ public class Advertisement implements Parcelable {
                 ", url='" + url + '\'' +
                 ", imageSrc='" + imageSrc + '\'' +
                 '}';*/
-         return stringBuffer.toString();
+        return stringBuffer.toString();
     }
 
 
