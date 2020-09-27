@@ -3,21 +3,15 @@ package com.knighenko.realfree.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,18 +27,16 @@ import com.knighenko.realfree.service.ServerService;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Advertisement> advertisements;
-   // private static final String SERVER_IP = "91.235.129.33";
-   private static final String SERVER_IP ="10.0.2.2";
+    private static final String SERVER_IP = "91.235.129.33";
+    // private static final String SERVER_IP ="10.0.2.2";
     private static final int PORT = 8080;
     private RecyclerView listAdvRecyclerView;
     private AdvAdapter advAdapter;
     private SQLiteDatabase myDB;
+
 
     private static int notificationId = 1;
 
@@ -55,13 +47,25 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("OLX бесплатно");
         setSupportActionBar(toolbar);
-               createDB();
-        String Url = getIntent().getStringExtra("url");
-        connectToServerSearch(Url);
-
-        startTracking(UrlOfPages.ELECTRONICS);
+        createDB();
+        if (savedInstanceState==null||!savedInstanceState.containsKey("Advertisements")) {
+            String Url = getIntent().getStringExtra("url");
+            connectToServerSearch(Url);
+        }
+        else {
+            advertisements=savedInstanceState.getParcelableArrayList("Advertisements");
+        }
+        initRecyclerView();
+        startTracking(UrlOfPages.HOME_GARDEN);
         //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
 
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("Advertisements", advertisements);
+        super.onSaveInstanceState(outState);
     }
 
     /**
@@ -69,10 +73,10 @@ public class MainActivity extends AppCompatActivity {
      */
     public void startTracking(final UrlOfPages object) {
 
-                Intent myIntent = new Intent(MainActivity.this, ServerService.class);
-                myIntent.putExtra("url", object.getUrl());
-                myIntent.putExtra("titleOfUrl", object.getTitle());
-                ContextCompat.startForegroundService(MainActivity.this, myIntent);
+        Intent myIntent = new Intent(MainActivity.this, ServerService.class);
+        myIntent.putExtra("url", object.getUrl());
+        myIntent.putExtra("titleOfUrl", object.getTitle());
+        ContextCompat.startForegroundService(MainActivity.this, myIntent);
 
     }
 
@@ -143,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
+
                         ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
                         advertisements = new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements();
                         for (Advertisement adv : advertisements) {
@@ -151,12 +156,10 @@ public class MainActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            initRecyclerView();
-                        }
-                    });
+
+
+
+
                 }
             }).start();
         }
@@ -184,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         listAdvRecyclerView.setAdapter(advAdapter);
 
     }
+
     /**
      * Метод создает меню
      */
@@ -199,15 +203,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         Intent intent;
-        switch (item.getItemId()){
-            case  R.id.action_search:
+        switch (item.getItemId()) {
+            case R.id.action_search:
                 intent = new Intent(this, SearchAdvertisements.class);
                 startActivity(intent);
-                return  true;
-            case  R.id.favourite_search:
+                return true;
+            case R.id.favourite_search:
                 intent = new Intent(this, FavouriteSearch.class);
                 startActivity(intent);
-                return  true;
+                return true;
         }
 
         return false;
