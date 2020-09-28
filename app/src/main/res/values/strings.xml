@@ -10,6 +10,6 @@
     <string name="fashion_style">Мода и стиль</string>
     <string name="favourite_adv">Избранные обьявления</string>
     <string name="favourite_search">Мои интересы</string>
-    <string name="button">Выбрать</string>
+    <string name="buttonOk">OK</string>
     <string name="textViewMonitor">Выберите одну или несколько рубрик для того, чтобы мониторить бесплатные обьявления и получать сообщения на телефон</string>
 </resources>

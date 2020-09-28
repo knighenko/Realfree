@@ -56,8 +56,10 @@ public class MainActivity extends AppCompatActivity {
             connectToServerSearch(Url);
 
         } else {
-            advertisements = savedInstanceState.getParcelableArrayList("Advertisements");
-            initRecyclerView();
+            if (advertisements != null) {
+                advertisements = savedInstanceState.getParcelableArrayList("Advertisements");
+                initRecyclerView();
+            }
         }
 
         startTracking(UrlOfPages.HOME_GARDEN);

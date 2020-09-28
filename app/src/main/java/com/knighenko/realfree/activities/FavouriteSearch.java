@@ -37,13 +37,7 @@ public class FavouriteSearch extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Метод обрабатывает нажатие на FAB
-     */
-    public void fabClick(View view) {
-        Intent intent = new Intent(this, ChangeHeading.class);
-        startActivity(intent);
-    }
+
 
     /**
      * Метод создает базу данных или открывает созданную + создает таблицу advertisement

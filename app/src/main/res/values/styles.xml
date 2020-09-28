@@ -21,8 +21,6 @@
     </style>
 
 
-
-
     <style name="TextViewAdvDescription">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -32,6 +30,12 @@
         <item name="android:textSize">20sp</item>
 
 
+    </style>
+
+    <style name="switchStyle" parent = "Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Chip" parent="Widget.MaterialComponents.Chip.Choice">

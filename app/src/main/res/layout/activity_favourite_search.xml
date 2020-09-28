@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,31 +11,174 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:layout_weight="1"
-                android:background="?attr/colorPrimary"
+
+        android:background="?attr/colorPrimary"
         android:theme="?attr/actionBarTheme"
         tools:ignore="MissingConstraints" />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton4"
+
+    <Switch
+        android:id="@+id/switch1"
+        style="@style/switchStyle"
+        android:layout_width="wrap_content"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+      android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/home_garden"
+        android:thumbTint="@color/colorPrimary"
+        android:trackTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DAA24E"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+    <Switch
+        android:id="@+id/switch2"
+        style="@style/switchStyle"
+        android:layout_width="wrap_content"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/electronics"
+        android:thumbTint="@color/colorPrimary"
+        android:trackTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DAA24E"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+    <Switch
+        android:id="@+id/switch3"
+        style="@style/switchStyle"
+        android:layout_width="wrap_content"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/transport_parts"
+        android:thumbTint="@color/colorPrimary"
+        android:trackTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DAA24E"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+    <Switch
+        android:id="@+id/switch4"
+        style="@style/switchStyle"
+        android:layout_width="wrap_content"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/business_services"
+        android:thumbTint="@color/colorPrimary"
+        android:trackTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DAA24E"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+    <Switch
+        android:id="@+id/switch5"
+        style="@style/switchStyle"
+        android:layout_width="wrap_content"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/fashion_style"
+        android:thumbTint="@color/colorPrimary"
+        android:trackTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DAA24E"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+    <Switch
+        android:id="@+id/switch6"
+        style="@style/switchStyle"
+        android:layout_width="wrap_content"
+        android:scaleX="1.3"
+        android:scaleY="1.3"
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/hobbies_leisure"
+        android:thumbTint="@color/colorPrimary"
+        android:trackTint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DAA24E"
+        android:layout_margin="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/textViewMonitor"
+        style="@style/TextViewAdvDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_chip_group_change" />
+
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:layout_alignParentTop="false"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:onClick="fabClick"
-        android:src="@drawable/ic_add_search_24"
-        app:backgroundTint="@color/colorPrimary"
-        app:elevation="6dp"
-        app:fabSize="normal"
-        app:tint="@color/white" />
+        android:layout_gravity="center"
+        android:text="@string/buttonOk" />
 
 
-</RelativeLayout>
+</LinearLayout>
