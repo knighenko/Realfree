@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 
 import com.knighenko.realfree.R;
 import com.knighenko.realfree.adapter.AdvAdapter;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView listAdvRecyclerView;
     private AdvAdapter advAdapter;
     private SQLiteDatabase myDB;
-
+    private ProgressBar progressBar;
 
     private static int notificationId = 1;
 
@@ -49,8 +50,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         createDB();
         if (savedInstanceState == null || !savedInstanceState.containsKey("Advertisements")) {
+
             String Url = getIntent().getStringExtra("url");
+
             connectToServerSearch(Url);
+
         } else {
             advertisements = savedInstanceState.getParcelableArrayList("Advertisements");
             initRecyclerView();
@@ -148,11 +152,14 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     try {
 
+                        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+                        progressBar.setVisibility(ProgressBar.VISIBLE);
                         ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
                         advertisements = new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements();
                         for (Advertisement adv : advertisements) {
                             addToDB(adv, myDB);
                         }
+                        progressBar.setVisibility(ProgressBar.INVISIBLE);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
