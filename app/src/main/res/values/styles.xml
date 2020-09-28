@@ -35,7 +35,7 @@
     <style name="switchStyle" parent = "Widget.AppCompat.CompoundButton.Switch">
         <item name="android:textColor">@color/chip_text_color</item>
         <item name="android:textAlignment">viewStart</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Chip" parent="Widget.MaterialComponents.Chip.Choice">
