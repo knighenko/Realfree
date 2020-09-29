@@ -1,6 +1,7 @@
 package com.knighenko.realfree.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.ContentValues;
@@ -10,13 +11,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 
 import com.knighenko.realfree.R;
 import com.knighenko.realfree.entity.Advertisement;
 
-public class FavouriteSearch extends AppCompatActivity {
+public class FavouriteSearch extends AppCompatActivity  {
     private Toolbar toolbar;
     private SQLiteDatabase myDB;
+    private SwitchCompat switchCompat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +30,15 @@ public class FavouriteSearch extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        switchCompat = (SwitchCompat) findViewById(R.id.switch_home_garden);
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                System.out.println("Switch State="+isChecked);
+            }
+        });
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -17,17 +17,14 @@
         tools:ignore="MissingConstraints" />
 
 
-
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_home_garden"
         style="@style/switchStyle"
         android:layout_width="match_parent"
-
-      android:layout_gravity="center"
-
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/home_garden"
-               app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -35,88 +32,82 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#DAA24E"
-        android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/switch_home_garden" />
+
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_electronics"
         style="@style/switchStyle"
         android:layout_width="match_parent"
-
-        android:layout_gravity="center"
-
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/electronics"
         android:thumbTint="@color/colorPrimary"
         android:trackTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#DAA24E"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_transport_parts"
         style="@style/switchStyle"
         android:layout_width="match_parent"
-
-        android:layout_gravity="center"
-
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="@string/transport_parts"
         android:thumbTint="@color/colorPrimary"
         android:trackTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#DAA24E"
-        android:layout_margin="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_business_services"
         style="@style/switchStyle"
         android:layout_width="match_parent"
 
-        android:layout_gravity="center"
-
         android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
         android:text="@string/business_services"
         android:thumbTint="@color/colorPrimary"
         android:trackTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#DAA24E"
         android:layout_margin="10dp"
+        android:background="#DAA24E"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_fashion_style"
         style="@style/switchStyle"
         android:layout_width="match_parent"
 
 
-        android:layout_gravity="center"
-
         android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
         android:text="@string/fashion_style"
         android:thumbTint="@color/colorPrimary"
         android:trackTint="@color/colorPrimary"
@@ -127,8 +118,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#DAA24E"
         android:layout_margin="10dp"
+        android:background="#DAA24E"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch1" />
@@ -145,24 +136,24 @@
         android:thumbTint="@color/colorPrimary"
         android:trackTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-       />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#DAA24E"
         android:layout_margin="10dp"
+        android:background="#DAA24E"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/switch1" />
+
     <TextView
         android:id="@+id/textView"
-        android:layout_margin="10dp"
+        style="@style/TextViewAdvDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:text="@string/textViewMonitor"
-        style="@style/TextViewAdvDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_chip_group_change" />
