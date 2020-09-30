@@ -39,8 +39,8 @@ public class FavouriteSearch extends AppCompatActivity {
                     createDB();
                     addToDB(UrlOfPages.HOME_GARDEN.getTitle(), UrlOfPages.HOME_GARDEN.getUrl(), myDB);
                 }
-                if (isChecked==false){
-
+                if (isChecked == false) {
+                    deleteFromDB(UrlOfPages.HOME_GARDEN.getTitle(), myDB);
                 }
                 System.out.println("Is in database: " + checkInDB(UrlOfPages.HOME_GARDEN.getTitle()));
             }
@@ -73,16 +73,17 @@ public class FavouriteSearch extends AppCompatActivity {
         ContentValues row = new ContentValues();
         row.put("title", title);
         row.put("url", url);
-        myDB.insert("favourite_search", null, row);
+           myDB.insert("favourite_search", null, row);
 
     }
+
     /**
      * Метод удаляет элементы из базу данных
      */
-    private void deleteFromDB(String title,  SQLiteDatabase myDB) {
-        ContentValues row = new ContentValues();
-        row.put("title", title);
-        myDB.insert("favourite_search", null, row);
+    private void deleteFromDB(String title, SQLiteDatabase myDB) {
+
+        myDB.delete("favourite_search",
+                "title = \'" +title+"\'", null);
 
     }
 
