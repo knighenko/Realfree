@@ -3,6 +3,7 @@ package com.knighenko.realfree.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -16,11 +17,17 @@ import android.widget.CompoundButton;
 import com.knighenko.realfree.R;
 import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.model.UrlOfPages;
+import com.knighenko.realfree.service.ServerService;
 
 public class FavouriteSearch extends AppCompatActivity {
     private Toolbar toolbar;
     private SQLiteDatabase myDB;
-    private SwitchCompat switchCompat;
+    private SwitchCompat switchCompat1;
+    private SwitchCompat switchCompat2;
+    private SwitchCompat switchCompat3;
+    private SwitchCompat switchCompat4;
+    private SwitchCompat switchCompat5;
+    private SwitchCompat switchCompat6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,22 +38,96 @@ public class FavouriteSearch extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        switchCompat = (SwitchCompat) findViewById(R.id.switch_home_garden);
-        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == true) {
-                    System.out.println("Switch State=" + isChecked);
-                    createDB();
-                    addToDB(UrlOfPages.HOME_GARDEN.getTitle(), UrlOfPages.HOME_GARDEN.getUrl(), myDB);
-                }
-                if (isChecked == false) {
-                    deleteFromDB(UrlOfPages.HOME_GARDEN.getTitle(), myDB);
-                }
-                System.out.println("Is in database: " + checkInDB(UrlOfPages.HOME_GARDEN.getTitle()));
-            }
-        });
+
+
+        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_home_garden);
+        switchCompat1.setOnCheckedChangeListener(createListener());
+        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_business_services);
+        switchCompat1.setOnCheckedChangeListener(createListener());
+        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_electronics);
+        switchCompat1.setOnCheckedChangeListener(createListener());
+        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_fashion_style);
+        switchCompat1.setOnCheckedChangeListener(createListener());
+        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_hobbies_leisure);
+        switchCompat1.setOnCheckedChangeListener(createListener());
+        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_transport_parts);
+        switchCompat1.setOnCheckedChangeListener(createListener());
     }
 
+    /**
+     * Метод создает листенер для всех SwitchCompat
+     */
+    private CompoundButton.OnCheckedChangeListener createListener() {
+        CompoundButton.OnCheckedChangeListener listener = new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                switch (buttonView.getId()) {
+                    case R.id.switch_home_garden:
+                        if (isChecked == true) {
+                            createDB();
+                            addToDB(UrlOfPages.HOME_GARDEN.getTitle(), UrlOfPages.HOME_GARDEN.getUrl(), myDB);
+                            startTracking(UrlOfPages.HOME_GARDEN);
+                        }
+                        if (isChecked == false) {
+                            deleteFromDB(UrlOfPages.HOME_GARDEN.getTitle(), myDB);
+                        }
+                        break;
+                    case R.id.switch_business_services:
+                        if (isChecked == true) {
+                            createDB();
+                            addToDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle(), UrlOfPages.BUSINESS_AND_SERVICES.getUrl(), myDB);
+                            startTracking(UrlOfPages.BUSINESS_AND_SERVICES);
+                        }
+                        if (isChecked == false) {
+                            deleteFromDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle(), myDB);
+                        }
+                        break;
+                    case R.id.switch_electronics:
+                        if (isChecked == true) {
+                            createDB();
+                            addToDB(UrlOfPages.ELECTRONICS.getTitle(), UrlOfPages.ELECTRONICS.getUrl(), myDB);
+                            startTracking(UrlOfPages.ELECTRONICS);
+                        }
+                        if (isChecked == false) {
+                            deleteFromDB(UrlOfPages.ELECTRONICS.getTitle(), myDB);
+                        }
+                        break;
+                    case R.id.switch_fashion_style:
+                        if (isChecked == true) {
+                            createDB();
+                            addToDB(UrlOfPages.FASHION_AND_STYLE.getTitle(), UrlOfPages.FASHION_AND_STYLE.getUrl(), myDB);
+                            startTracking(UrlOfPages.FASHION_AND_STYLE);
+                        }
+                        if (isChecked == false) {
+                            deleteFromDB(UrlOfPages.FASHION_AND_STYLE.getTitle(), myDB);
+                        }
+                        break;
+                    case R.id.switch_hobbies_leisure:
+                        if (isChecked == true) {
+                            createDB();
+                            addToDB(UrlOfPages.HOBBIES_AND_LEISURE.getTitle(), UrlOfPages.HOBBIES_AND_LEISURE.getUrl(), myDB);
+                            startTracking(UrlOfPages.HOBBIES_AND_LEISURE);
+                        }
+
+                        if (isChecked == false) {
+                            deleteFromDB(UrlOfPages.HOBBIES_AND_LEISURE.getTitle(), myDB);
+                        }
+                        break;
+                    case R.id.switch_transport_parts:
+                        if (isChecked == true) {
+                            createDB();
+                            addToDB(UrlOfPages.TRANSPORT_PARTS.getTitle(), UrlOfPages.TRANSPORT_PARTS.getUrl(), myDB);
+                            startTracking(UrlOfPages.TRANSPORT_PARTS);
+                        }
+                        if (isChecked == false) {
+                            deleteFromDB(UrlOfPages.TRANSPORT_PARTS.getTitle(), myDB);
+                        }
+                        break;
+                }
+            }
+        };
+        return listener;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -56,7 +137,17 @@ public class FavouriteSearch extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
+     */
+    public void startTracking(final UrlOfPages object) {
 
+        Intent myIntent = new Intent(this, ServerService.class);
+        myIntent.putExtra("url", object.getUrl());
+        myIntent.putExtra("titleOfUrl", object.getTitle());
+        ContextCompat.startForegroundService(this, myIntent);
+
+    }
     /**
      * Метод создает базу данных или открывает созданную + создает таблицу advertisement
      */
@@ -73,7 +164,7 @@ public class FavouriteSearch extends AppCompatActivity {
         ContentValues row = new ContentValues();
         row.put("title", title);
         row.put("url", url);
-           myDB.insert("favourite_search", null, row);
+        myDB.insert("favourite_search", null, row);
 
     }
 
@@ -83,7 +174,7 @@ public class FavouriteSearch extends AppCompatActivity {
     private void deleteFromDB(String title, SQLiteDatabase myDB) {
 
         myDB.delete("favourite_search",
-                "title = \'" +title+"\'", null);
+                "title = \'" + title + "\'", null);
 
     }
 

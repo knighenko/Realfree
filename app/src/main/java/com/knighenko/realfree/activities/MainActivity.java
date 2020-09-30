@@ -62,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        startTracking(UrlOfPages.HOME_GARDEN);
-        //   readFromServerFefteenSec(UrlOfPages.BUSINESS_AND_SERVICES.getUrl());
+        //startTracking(UrlOfPages.HOME_GARDEN);
 
     }
 
