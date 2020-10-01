@@ -39,20 +39,28 @@ public class FavouriteSearch extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-
+createDB();
         switchCompat1 = (SwitchCompat) findViewById(R.id.switch_home_garden);
+        switchCompat2 = (SwitchCompat) findViewById(R.id.switch_business_services);
+        switchCompat3 = (SwitchCompat) findViewById(R.id.switch_electronics);
+        switchCompat4 = (SwitchCompat) findViewById(R.id.switch_fashion_style);
+        switchCompat5 = (SwitchCompat) findViewById(R.id.switch_hobbies_leisure);
+        switchCompat6 = (SwitchCompat) findViewById(R.id.switch_transport_parts);
+        switchCompat1.setChecked(checkInDB(UrlOfPages.HOME_GARDEN.getTitle()));
+        switchCompat2.setChecked(checkInDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle()));
+        switchCompat3.setChecked(checkInDB(UrlOfPages.ELECTRONICS.getTitle()));
+        switchCompat4.setChecked(checkInDB(UrlOfPages.FASHION_AND_STYLE.getTitle()));
+        switchCompat5.setChecked(checkInDB(UrlOfPages.HOBBIES_AND_LEISURE.getTitle()));
+        switchCompat6.setChecked(checkInDB(UrlOfPages.TRANSPORT_PARTS.getTitle()));
         switchCompat1.setOnCheckedChangeListener(createListener());
-        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_business_services);
-        switchCompat1.setOnCheckedChangeListener(createListener());
-        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_electronics);
-        switchCompat1.setOnCheckedChangeListener(createListener());
-        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_fashion_style);
-        switchCompat1.setOnCheckedChangeListener(createListener());
-        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_hobbies_leisure);
-        switchCompat1.setOnCheckedChangeListener(createListener());
-        switchCompat1 = (SwitchCompat) findViewById(R.id.switch_transport_parts);
-        switchCompat1.setOnCheckedChangeListener(createListener());
+        switchCompat2.setOnCheckedChangeListener(createListener());
+        switchCompat3.setOnCheckedChangeListener(createListener());
+        switchCompat4.setOnCheckedChangeListener(createListener());
+        switchCompat5.setOnCheckedChangeListener(createListener());
+        switchCompat6.setOnCheckedChangeListener(createListener());
+
     }
+
 
     /**
      * Метод создает листенер для всех SwitchCompat
@@ -148,6 +156,7 @@ public class FavouriteSearch extends AppCompatActivity {
         ContextCompat.startForegroundService(this, myIntent);
 
     }
+
     /**
      * Метод создает базу данных или открывает созданную + создает таблицу advertisement
      */
@@ -182,7 +191,7 @@ public class FavouriteSearch extends AppCompatActivity {
      * Метод читает из базы данных избранные рубрики для поиска
      */
     private boolean checkInDB(String title) {
-        Cursor cursor = myDB.rawQuery("SELECT EXISTS (select url from  favourite_search WHERE title = \'" + title + "\'  LIMIT 1)", null);
+        Cursor cursor = myDB.rawQuery("SELECT EXISTS (select title from  favourite_search WHERE title = \'" + title + "\'  LIMIT 1)", null);
         while (cursor.moveToNext()) {
             if (cursor.getInt(0) == 1) {
                 cursor.close();
