@@ -5,7 +5,9 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
+import android.app.ActivityManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,6 +30,7 @@ public class FavouriteSearch extends AppCompatActivity {
     private SwitchCompat switchCompat4;
     private SwitchCompat switchCompat5;
     private SwitchCompat switchCompat6;
+    private StringBuilder favouriteSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,25 +42,25 @@ public class FavouriteSearch extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-createDB();
+        createDB();
         switchCompat1 = (SwitchCompat) findViewById(R.id.switch_home_garden);
-        switchCompat2 = (SwitchCompat) findViewById(R.id.switch_business_services);
-        switchCompat3 = (SwitchCompat) findViewById(R.id.switch_electronics);
-        switchCompat4 = (SwitchCompat) findViewById(R.id.switch_fashion_style);
-        switchCompat5 = (SwitchCompat) findViewById(R.id.switch_hobbies_leisure);
-        switchCompat6 = (SwitchCompat) findViewById(R.id.switch_transport_parts);
-        switchCompat1.setChecked(checkInDB(UrlOfPages.HOME_GARDEN.getTitle()));
-        switchCompat2.setChecked(checkInDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle()));
-        switchCompat3.setChecked(checkInDB(UrlOfPages.ELECTRONICS.getTitle()));
-        switchCompat4.setChecked(checkInDB(UrlOfPages.FASHION_AND_STYLE.getTitle()));
-        switchCompat5.setChecked(checkInDB(UrlOfPages.HOBBIES_AND_LEISURE.getTitle()));
-        switchCompat6.setChecked(checkInDB(UrlOfPages.TRANSPORT_PARTS.getTitle()));
         switchCompat1.setOnCheckedChangeListener(createListener());
+        switchCompat1.setChecked(checkInDB(UrlOfPages.HOME_GARDEN.getTitle()));
+        switchCompat2 = (SwitchCompat) findViewById(R.id.switch_business_services);
         switchCompat2.setOnCheckedChangeListener(createListener());
+        switchCompat2.setChecked(checkInDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle()));
+        switchCompat3 = (SwitchCompat) findViewById(R.id.switch_electronics);
         switchCompat3.setOnCheckedChangeListener(createListener());
+        switchCompat3.setChecked(checkInDB(UrlOfPages.ELECTRONICS.getTitle()));
+        switchCompat4 = (SwitchCompat) findViewById(R.id.switch_fashion_style);
         switchCompat4.setOnCheckedChangeListener(createListener());
+        switchCompat4.setChecked(checkInDB(UrlOfPages.FASHION_AND_STYLE.getTitle()));
+        switchCompat5 = (SwitchCompat) findViewById(R.id.switch_hobbies_leisure);
         switchCompat5.setOnCheckedChangeListener(createListener());
+        switchCompat5.setChecked(checkInDB(UrlOfPages.HOBBIES_AND_LEISURE.getTitle()));
+        switchCompat6 = (SwitchCompat) findViewById(R.id.switch_transport_parts);
         switchCompat6.setOnCheckedChangeListener(createListener());
+        switchCompat6.setChecked(checkInDB(UrlOfPages.TRANSPORT_PARTS.getTitle()));
 
     }
 
@@ -145,16 +148,16 @@ createDB();
         return true;
     }
 
+
     /**
      * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
      */
     public void startTracking(final UrlOfPages object) {
 
-        Intent myIntent = new Intent(this, ServerService.class);
+        Intent myIntent = new Intent(FavouriteSearch.this, ServerService.class);
         myIntent.putExtra("url", object.getUrl());
         myIntent.putExtra("titleOfUrl", object.getTitle());
-        ContextCompat.startForegroundService(this, myIntent);
-
+        this.startService(myIntent);
     }
 
     /**

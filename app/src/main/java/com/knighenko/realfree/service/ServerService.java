@@ -81,12 +81,14 @@ public class ServerService extends Service {
                 .build();
         startForeground(1, notification);
         readFromServerFefteenSec(url);
-        return START_STICKY_COMPATIBILITY;
+        return START_STICKY ;
     }
 
+    // Destroy
     @Override
     public void onDestroy() {
-        super.onDestroy();
+
+
     }
 
     @Override

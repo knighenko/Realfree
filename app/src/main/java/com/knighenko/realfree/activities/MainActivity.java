@@ -7,7 +7,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActivityManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -61,8 +63,9 @@ public class MainActivity extends AppCompatActivity {
                 initRecyclerView();
             }
         }
-
-        //startTracking(UrlOfPages.HOME_GARDEN);
+        if (!isMyServiceRunning(ServerService.class)) {
+            startTracking(UrlOfPages.HOME_GARDEN);
+        }
 
     }
 
@@ -74,6 +77,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Метод проверяет запущен ли сервис по отслеживанию или нет
+     */
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
      */
     public void startTracking(final UrlOfPages object) {
@@ -81,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(MainActivity.this, ServerService.class);
         myIntent.putExtra("url", object.getUrl());
         myIntent.putExtra("titleOfUrl", object.getTitle());
-        ContextCompat.startForegroundService(MainActivity.this, myIntent);
+        this.startService(myIntent);
 
     }
 
