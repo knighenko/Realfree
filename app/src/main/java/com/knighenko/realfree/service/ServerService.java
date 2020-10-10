@@ -86,7 +86,7 @@ public class ServerService extends Service {
     // Destroy
     @Override
     public void onDestroy() {
-
+        super.onDestroy();
 
     }
 

@@ -21,6 +21,8 @@ import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.model.UrlOfPages;
 import com.knighenko.realfree.service.ServerService;
 
+import java.util.ArrayList;
+
 public class FavouriteSearch extends AppCompatActivity {
     private Toolbar toolbar;
     private SQLiteDatabase myDB;
@@ -158,12 +160,12 @@ public class FavouriteSearch extends AppCompatActivity {
     /**
      * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
      */
-    public void startTracking(final UrlOfPages object) {
-
-        Intent myIntent = new Intent(FavouriteSearch.this, ServerService.class);
-        myIntent.putExtra("url", object.getUrl());
-        myIntent.putExtra("titleOfUrl", object.getTitle());
-        this.startService(myIntent);
+    public void startTracking(ArrayList<String> strings) {
+        for (String url : strings) {
+            Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
+            myIntent.putExtra("url", url);
+            ContextCompat.startForegroundService(this, myIntent);
+        }
     }
 
     /**
@@ -211,9 +213,58 @@ public class FavouriteSearch extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * Метод запускает и останавливает мониторинг обьявление
+     */
+    private void startOrStopTracking() {
+        ArrayList<String> strings = readFromDBFavourite();
+        if (!isMyServiceRunning(ServerService.class) & strings.size() >= 1) {
+            startTracking(strings);
+        } else if (isMyServiceRunning(ServerService.class) & strings.size() == 0) {
+            stopTracking();
+        } else if (isMyServiceRunning(ServerService.class) & strings.size() >= 1) {
+            stopTracking();
+            startTracking(strings);
+        }
+    }
+
+    /**
+     * Метод читает из базы данных избранные рубрики для поиска
+     */
+    private ArrayList<String> readFromDBFavourite() {
+        ArrayList<String> strings = new ArrayList<String>();
+        Cursor cursor = myDB.rawQuery("select url from  favourite_search", null);
+        while (cursor.moveToNext()) {
+            strings.add(cursor.getString(0));
+        }
+        cursor.close();
+        return strings;
+    }
+
+    /**
+     * Метод проверяет запущен ли сервис по отслеживанию или нет
+     */
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Метод останавливает сервис по отслеживанию новых обьявлений
+     */
+    public void stopTracking() {
+        Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
+        this.stopService(myIntent);
+    }
 
     public void clickFavOk(View view) {
         intent = new Intent(FavouriteSearch.this, MainActivity.class);
+        startOrStopTracking();
         startActivity(intent);
     }
 }

@@ -63,13 +63,18 @@ public class MainActivity extends AppCompatActivity {
                 initRecyclerView();
             }
         }
-        if (!isMyServiceRunning(ServerService.class)) {
-            startTracking();
-        }
-
+        startOrStopTracking();
 
     }
 
+    /**
+     * Метод запускает и останавливает мониторинг обьявление
+     */
+    private void startOrStopTracking() {
+        ArrayList<String> strings = readFromDBFavourite();
+        if (!isMyServiceRunning(ServerService.class) & strings.size() >= 1)
+            startTracking(strings);
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -93,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
      */
-    public void startTracking() {
-        for (String url : readFromDBFavourite()) {
-            Intent myIntent = new Intent(MainActivity.this, ServerService.class);
+    public void startTracking(ArrayList<String> strings) {
+        for (String url : strings) {
+            Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
             myIntent.putExtra("url", url);
             ContextCompat.startForegroundService(this, myIntent);
         }
@@ -105,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
      * Метод останавливает сервис по отслеживанию новых обьявлений
      */
     public void stopTracking() {
-        Intent myIntent = new Intent(MainActivity.this, ServerService.class);
+        Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
         this.stopService(myIntent);
     }
 
@@ -162,9 +167,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> readFromDBFavourite() {
         ArrayList<String> strings = new ArrayList<String>();
         Cursor cursor = myDB.rawQuery("select url from  favourite_search", null);
-        System.out.println("*****************************************************************");
         while (cursor.moveToNext()) {
-
             strings.add(cursor.getString(0));
         }
         cursor.close();
