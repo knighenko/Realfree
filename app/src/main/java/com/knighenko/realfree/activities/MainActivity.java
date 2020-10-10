@@ -64,8 +64,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if (!isMyServiceRunning(ServerService.class)) {
-            startTracking(UrlOfPages.HOME_GARDEN);
+            startTracking();
         }
+
 
     }
 
@@ -92,13 +93,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
      */
-    public void startTracking(final UrlOfPages object) {
-
-        Intent myIntent = new Intent(MainActivity.this, ServerService.class);
-        myIntent.putExtra("url", object.getUrl());
-        myIntent.putExtra("titleOfUrl", object.getTitle());
-        this.startService(myIntent);
-
+    public void startTracking() {
+        for (String url : readFromDBFavourite()) {
+            Intent myIntent = new Intent(MainActivity.this, ServerService.class);
+            myIntent.putExtra("url", url);
+            ContextCompat.startForegroundService(this, myIntent);
+        }
     }
 
     /**
@@ -142,9 +142,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Метод проверяет на наличие записи по title в базе, true - элемент присутствует!
+     * Метод проверяет на наличие записи по title (Обьявления) в базе, true - элемент присутствует!
      */
-    private boolean checkInDB(String title) {
+    private boolean checkInDBAdvert(String title) {
         Cursor cursor = myDB.rawQuery("SELECT EXISTS (select * from  advertisement WHERE title = \"" + title + "\"  LIMIT 1)", null);
         while (cursor.moveToNext()) {
             if (cursor.getInt(0) == 1) {
@@ -154,6 +154,21 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
         return false;
+    }
+
+    /**
+     * Метод читает из базы данных избранные рубрики для поиска
+     */
+    private ArrayList<String> readFromDBFavourite() {
+        ArrayList<String> strings = new ArrayList<String>();
+        Cursor cursor = myDB.rawQuery("select url from  favourite_search", null);
+        System.out.println("*****************************************************************");
+        while (cursor.moveToNext()) {
+
+            strings.add(cursor.getString(0));
+        }
+        cursor.close();
+        return strings;
     }
 
 

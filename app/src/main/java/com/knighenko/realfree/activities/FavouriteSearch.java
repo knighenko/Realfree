@@ -75,9 +75,10 @@ public class FavouriteSearch extends AppCompatActivity {
                 switch (buttonView.getId()) {
                     case R.id.switch_home_garden:
                         if (isChecked == true) {
-                            createDB();
-                            addToDB(UrlOfPages.HOME_GARDEN.getTitle(), UrlOfPages.HOME_GARDEN.getUrl(), myDB);
-                            startTracking(UrlOfPages.HOME_GARDEN);
+                            if (!checkInDB(UrlOfPages.HOME_GARDEN.getTitle())) {
+                                createDB();
+                                addToDB(UrlOfPages.HOME_GARDEN.getTitle(), UrlOfPages.HOME_GARDEN.getUrl(), myDB);
+                            }
                         }
                         if (isChecked == false) {
                             deleteFromDB(UrlOfPages.HOME_GARDEN.getTitle(), myDB);
@@ -85,9 +86,10 @@ public class FavouriteSearch extends AppCompatActivity {
                         break;
                     case R.id.switch_business_services:
                         if (isChecked == true) {
-                            createDB();
-                            addToDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle(), UrlOfPages.BUSINESS_AND_SERVICES.getUrl(), myDB);
-                            startTracking(UrlOfPages.BUSINESS_AND_SERVICES);
+                            if (!checkInDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle())) {
+                                createDB();
+                                addToDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle(), UrlOfPages.BUSINESS_AND_SERVICES.getUrl(), myDB);
+                            }
                         }
                         if (isChecked == false) {
                             deleteFromDB(UrlOfPages.BUSINESS_AND_SERVICES.getTitle(), myDB);
@@ -95,9 +97,10 @@ public class FavouriteSearch extends AppCompatActivity {
                         break;
                     case R.id.switch_electronics:
                         if (isChecked == true) {
-                            createDB();
-                            addToDB(UrlOfPages.ELECTRONICS.getTitle(), UrlOfPages.ELECTRONICS.getUrl(), myDB);
-                            startTracking(UrlOfPages.ELECTRONICS);
+                            if (!checkInDB(UrlOfPages.ELECTRONICS.getTitle())) {
+                                createDB();
+                                addToDB(UrlOfPages.ELECTRONICS.getTitle(), UrlOfPages.ELECTRONICS.getUrl(), myDB);
+                            }
                         }
                         if (isChecked == false) {
                             deleteFromDB(UrlOfPages.ELECTRONICS.getTitle(), myDB);
@@ -105,9 +108,10 @@ public class FavouriteSearch extends AppCompatActivity {
                         break;
                     case R.id.switch_fashion_style:
                         if (isChecked == true) {
-                            createDB();
-                            addToDB(UrlOfPages.FASHION_AND_STYLE.getTitle(), UrlOfPages.FASHION_AND_STYLE.getUrl(), myDB);
-                            startTracking(UrlOfPages.FASHION_AND_STYLE);
+                            if (!checkInDB(UrlOfPages.FASHION_AND_STYLE.getTitle())) {
+                                createDB();
+                                addToDB(UrlOfPages.FASHION_AND_STYLE.getTitle(), UrlOfPages.FASHION_AND_STYLE.getUrl(), myDB);
+                            }
                         }
                         if (isChecked == false) {
                             deleteFromDB(UrlOfPages.FASHION_AND_STYLE.getTitle(), myDB);
@@ -115,9 +119,10 @@ public class FavouriteSearch extends AppCompatActivity {
                         break;
                     case R.id.switch_hobbies_leisure:
                         if (isChecked == true) {
-                            createDB();
-                            addToDB(UrlOfPages.HOBBIES_AND_LEISURE.getTitle(), UrlOfPages.HOBBIES_AND_LEISURE.getUrl(), myDB);
-                            startTracking(UrlOfPages.HOBBIES_AND_LEISURE);
+                            if (!checkInDB(UrlOfPages.HOBBIES_AND_LEISURE.getTitle())) {
+                                createDB();
+                                addToDB(UrlOfPages.HOBBIES_AND_LEISURE.getTitle(), UrlOfPages.HOBBIES_AND_LEISURE.getUrl(), myDB);
+                            }
                         }
 
                         if (isChecked == false) {
@@ -126,9 +131,10 @@ public class FavouriteSearch extends AppCompatActivity {
                         break;
                     case R.id.switch_transport_parts:
                         if (isChecked == true) {
-                            createDB();
-                            addToDB(UrlOfPages.TRANSPORT_PARTS.getTitle(), UrlOfPages.TRANSPORT_PARTS.getUrl(), myDB);
-                            startTracking(UrlOfPages.TRANSPORT_PARTS);
+                            if (!checkInDB(UrlOfPages.TRANSPORT_PARTS.getTitle())) {
+                                createDB();
+                                addToDB(UrlOfPages.TRANSPORT_PARTS.getTitle(), UrlOfPages.TRANSPORT_PARTS.getUrl(), myDB);
+                            }
                         }
                         if (isChecked == false) {
                             deleteFromDB(UrlOfPages.TRANSPORT_PARTS.getTitle(), myDB);
@@ -191,7 +197,7 @@ public class FavouriteSearch extends AppCompatActivity {
     }
 
     /**
-     * Метод читает из базы данных избранные рубрики для поиска
+     * Метод читает из базы данных избранные рубрики для поиска (проверка на наличие в базе)
      */
     private boolean checkInDB(String title) {
         Cursor cursor = myDB.rawQuery("SELECT EXISTS (select title from  favourite_search WHERE title = \'" + title + "\'  LIMIT 1)", null);

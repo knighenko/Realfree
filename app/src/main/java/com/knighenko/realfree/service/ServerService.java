@@ -68,20 +68,19 @@ public class ServerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String url = intent.getStringExtra("url");
-        String title = intent.getStringExtra("titleOfUrl");
+
         createNotificationChannel1();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_1)
-                .setContentTitle("Мониторинг обьявлений OLX")
-                .setContentText(title)
+                .setContentTitle("Идет мониторинг обьявлений OLX")
                 .setSmallIcon(R.mipmap.ic_message)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
         readFromServerFefteenSec(url);
-        return START_STICKY ;
+        return START_STICKY;
     }
 
     // Destroy
