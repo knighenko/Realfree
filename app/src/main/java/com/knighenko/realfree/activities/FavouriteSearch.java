@@ -30,7 +30,7 @@ public class FavouriteSearch extends AppCompatActivity {
     private SwitchCompat switchCompat4;
     private SwitchCompat switchCompat5;
     private SwitchCompat switchCompat6;
-    private StringBuilder favouriteSearch;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,4 +205,9 @@ public class FavouriteSearch extends AppCompatActivity {
         return false;
     }
 
+
+    public void clickFavOk(View view) {
+        intent = new Intent(FavouriteSearch.this, MainActivity.class);
+        startActivity(intent);
+    }
 }

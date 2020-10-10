@@ -104,10 +104,7 @@
         android:id="@+id/switch_fashion_style"
         style="@style/switchStyle"
         android:layout_width="match_parent"
-
-
         android:layout_height="wrap_content"
-
         android:layout_gravity="center"
         android:text="@string/fashion_style"
         android:thumbTint="@color/colorPrimary"
@@ -128,12 +125,10 @@
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_hobbies_leisure"
         style="@style/switchStyle"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
-        android:text="@string/hobbies_leisure"
+       android:text="@string/hobbies_leisure"
         android:thumbTint="@color/colorPrimary"
         android:trackTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -160,7 +155,8 @@
         app:layout_constraintTop_toBottomOf="@+id/my_chip_group_change" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonFavOk"
+        android:onClick="clickFavOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
