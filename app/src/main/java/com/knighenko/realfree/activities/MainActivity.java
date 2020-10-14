@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 initRecyclerView();
             }
         }
-        startOrStopTracking();
+
 
     }
 

@@ -176,7 +176,9 @@ public class ServerService extends Service {
      * Метод проверяет на наличие записи по title в базе, true - элемент присутствует!
      */
     private boolean checkInDB(String title) {
-        Cursor cursor = myDB.rawQuery("SELECT EXISTS (select * from  advertisement WHERE title = \'" + title + "\'  LIMIT 1)", null);
+        String query = "SELECT  * FROM advertisement WHERE title = ? LIMIT 1";
+       // Cursor cursor = myDB.rawQuery("SELECT EXISTS (select * from  advertisement WHERE title = '" + title + "'  LIMIT 1)", null);
+        Cursor cursor = myDB.rawQuery(query, new String[] {title});
         while (cursor.moveToNext()) {
             if (cursor.getInt(0) == 1) {
                 cursor.close();

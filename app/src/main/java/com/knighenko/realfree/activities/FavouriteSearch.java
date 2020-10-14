@@ -222,9 +222,6 @@ public class FavouriteSearch extends AppCompatActivity {
             startTracking(strings);
         } else if (isMyServiceRunning(ServerService.class) & strings.size() == 0) {
             stopTracking();
-        } else if (isMyServiceRunning(ServerService.class) & strings.size() >= 1) {
-            stopTracking();
-            startTracking(strings);
         }
     }
 
