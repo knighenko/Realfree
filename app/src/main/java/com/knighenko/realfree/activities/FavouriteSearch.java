@@ -218,9 +218,9 @@ public class FavouriteSearch extends AppCompatActivity {
      */
     private void startOrStopTracking() {
         ArrayList<String> strings = readFromDBFavourite();
-        if (!isMyServiceRunning(ServerService.class) & strings.size() >= 1) {
+
             startTracking(strings);
-        } else if (isMyServiceRunning(ServerService.class) & strings.size() == 0) {
+       if (isMyServiceRunning(ServerService.class) & strings.size() == 0) {
             stopTracking();
         }
     }

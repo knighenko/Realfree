@@ -258,6 +258,10 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, FavouriteSearch.class);
                 startActivity(intent);
                 return true;
+            case R.id.favourite_adv:
+                intent = new Intent(this, FavouriteAdvertisements.class);
+                startActivity(intent);
+                return true;
         }
 
         return false;
