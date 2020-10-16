@@ -69,7 +69,7 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
             title = itemView.findViewById(R.id.textViewTitleAdv);
             description=itemView.findViewById(R.id.textViewDescription);
             imageView = itemView.findViewById(R.id.smallImageViewAdv);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Advertisement adv=advertisements.get(getLayoutPosition());
