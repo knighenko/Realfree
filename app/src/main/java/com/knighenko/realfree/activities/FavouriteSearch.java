@@ -32,6 +32,7 @@ public class FavouriteSearch extends AppCompatActivity {
     private SwitchCompat switchCompat4;
     private SwitchCompat switchCompat5;
     private SwitchCompat switchCompat6;
+    private SwitchCompat switchCompat7;
     private Intent intent;
 
     @Override
@@ -63,6 +64,9 @@ public class FavouriteSearch extends AppCompatActivity {
         switchCompat6 = (SwitchCompat) findViewById(R.id.switch_transport_parts);
         switchCompat6.setOnCheckedChangeListener(createListener());
         switchCompat6.setChecked(checkInDB(UrlOfPages.TRANSPORT_PARTS.getTitle()));
+        switchCompat7 = (SwitchCompat) findViewById(R.id.switch_world_of_children);
+        switchCompat7.setOnCheckedChangeListener(createListener());
+        switchCompat7.setChecked(checkInDB(UrlOfPages.WORLD_OF_CHILDREN.getTitle()));
 
     }
 
@@ -140,6 +144,17 @@ public class FavouriteSearch extends AppCompatActivity {
                         }
                         if (isChecked == false) {
                             deleteFromDB(UrlOfPages.TRANSPORT_PARTS.getTitle(), myDB);
+                        }
+                        break;
+                    case R.id.switch_world_of_children:
+                        if (isChecked == true) {
+                            if (!checkInDB(UrlOfPages.WORLD_OF_CHILDREN.getTitle())) {
+                                createDB();
+                                addToDB(UrlOfPages.WORLD_OF_CHILDREN.getTitle(), UrlOfPages.WORLD_OF_CHILDREN.getUrl(), myDB);
+                            }
+                        }
+                        if (isChecked == false) {
+                            deleteFromDB(UrlOfPages.WORLD_OF_CHILDREN.getTitle(), myDB);
                         }
                         break;
                 }

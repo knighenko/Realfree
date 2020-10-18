@@ -100,7 +100,7 @@ public class ServerService extends Service {
      * Метод посылает каждые 30 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
      */
     private void readFromServerFefteenSec(final String Url) {
-        int delay = 1000; // delay for 1 sec.
+        int delay = 0; // delay for 0 sec.
         int period = 30000; // repeat every 30 sec.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {

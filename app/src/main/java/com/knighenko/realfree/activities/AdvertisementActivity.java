@@ -29,7 +29,7 @@ public class AdvertisementActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_adv);
-        Log.d(LOG, "onCreate");
+
         this.title = findViewById(R.id.textViewTitleAdv);
         this.description = findViewById(R.id.textViewDescription);
         this.imageView = findViewById(R.id.bigImageViewAdv);

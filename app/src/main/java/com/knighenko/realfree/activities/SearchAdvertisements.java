@@ -85,6 +85,12 @@ public class SearchAdvertisements extends AppCompatActivity {
                 startActivity(intent);
                 Toast.makeText(this, "Поиск в рубрике "+UrlOfPages.HOBBIES_AND_LEISURE.getTitle(), Toast.LENGTH_LONG).show();
                 break;
+            case R.id.world_of_children:
+                intent = new Intent(SearchAdvertisements.this, MainActivity.class);
+                intent.putExtra("url", UrlOfPages.WORLD_OF_CHILDREN.getUrl());
+                startActivity(intent);
+                Toast.makeText(this, "Поиск в рубрике "+UrlOfPages.WORLD_OF_CHILDREN.getTitle(), Toast.LENGTH_LONG).show();
+                break;
         }
     }
 
