@@ -1,5 +1,6 @@
 package com.knighenko.realfree.adapter;
 
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,19 +62,27 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
     class AdvListHolder extends RecyclerView.ViewHolder {
         private TextView title;
         private TextView description;
-
+        private ImageView whatsImage;
         private ImageView imageView;
 
         public AdvListHolder(View itemView) {
             super(itemView);
             title = itemView.findViewById(R.id.textViewTitleAdv);
-            description=itemView.findViewById(R.id.textViewDescription);
+            description = itemView.findViewById(R.id.textViewDescription);
             imageView = itemView.findViewById(R.id.smallImageViewAdv);
+            whatsImage=itemView.findViewById(R.id.whats_ic);
             description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Advertisement adv=advertisements.get(getLayoutPosition());
+                    Advertisement adv = advertisements.get(getLayoutPosition());
                     onAdvertisementClickListener.onAdvClick(adv);
+                }
+            });
+            whatsImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Advertisement adv = advertisements.get(getLayoutPosition());
+                    onAdvertisementClickListener.onWhatsClick(adv);
                 }
             });
         }
@@ -97,5 +106,6 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
 
     public interface OnAdvertisementClickListener {
         void onAdvClick(Advertisement advertisement);
+        void onWhatsClick(Advertisement advertisement);
     }
 }

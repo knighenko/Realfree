@@ -11,6 +11,7 @@ import android.app.ActivityManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -29,6 +30,7 @@ import com.knighenko.realfree.service.ServerService;
 
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -226,6 +228,23 @@ public class MainActivity extends AppCompatActivity {
                 intent.setData(Uri.parse(advertisement.getUrl()));
                 startActivity(intent);
 
+            }
+
+            @Override
+            public void onWhatsClick(Advertisement advertisement) {
+                String urlAdv=advertisement.getUrl();
+                try {
+                    PackageManager packageManager = getApplicationContext().getPackageManager();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    String url = "https://api.whatsapp.com/send?phone=" + "+380677533012" + "&text=" + URLEncoder.encode(urlAdv, "UTF-8");
+                    i.setPackage("com.whatsapp");
+                    i.setData(Uri.parse(url));
+                    if (i.resolveActivity(packageManager) != null) {
+                       startActivity(i);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         };
         advAdapter = new AdvAdapter(onAdvertisementClickListener);
