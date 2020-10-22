@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 
 import com.knighenko.realfree.R;
 import com.squareup.picasso.Picasso;
+
+import java.net.URLEncoder;
 
 public class AdvertisementActivity extends AppCompatActivity {
     private TextView title;
@@ -70,10 +73,26 @@ public class AdvertisementActivity extends AppCompatActivity {
         }
         return true;
     }
-
+/**Метод реагирует на нажатие по описанию нового обьявления*/
     public void advClick(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         startActivity(intent);
+    }
+    /**Метод реагирует на нажатие WhatsApp нового обьявления*/
+    public void advWhatsClick(View view) {
+
+        try {
+            PackageManager packageManager = getApplicationContext().getPackageManager();
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            String urlWhats = "https://api.whatsapp.com/send?phone=" + "+380677533012" + "&text=" + URLEncoder.encode(url, "UTF-8");
+            i.setPackage("com.whatsapp");
+            i.setData(Uri.parse(urlWhats));
+            if (i.resolveActivity(packageManager) != null) {
+                startActivity(i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
