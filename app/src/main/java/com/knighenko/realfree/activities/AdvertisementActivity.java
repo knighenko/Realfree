@@ -10,7 +10,6 @@ import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,27 +23,31 @@ import com.squareup.picasso.Picasso;
 import java.net.URLEncoder;
 
 public class AdvertisementActivity extends AppCompatActivity {
-    private TextView title;
-    private TextView description;
+    private TextView titleView;
+    private TextView descriptionView;
     private ImageView imageView;
     private static final String LOG = "MyApp";
     private Toolbar toolbar;
     private String url;
+    private String title;
+    private String description;
     private SQLiteDatabase myDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_adv);
 
-        this.title = findViewById(R.id.textViewTitleAdv);
-        this.description = findViewById(R.id.textViewDescription);
+        this.titleView = findViewById(R.id.textViewTitleAdv);
+        this.descriptionView = findViewById(R.id.textViewDescription);
         this.imageView = findViewById(R.id.bigImageViewAdv);
         this.toolbar = findViewById(R.id.toolbar);
         this.url=getIntent().getStringExtra("urlAdv");
+        this.title=getIntent().getStringExtra("title");
+        this.description=getIntent().getStringExtra("description");
         toolbar.setTitle("OLX бесплатно");
         setSupportActionBar(toolbar);
-        title.setText(getIntent().getStringExtra("title"));
-        description.setText(getIntent().getStringExtra("description"));
+        titleView.setText(title);
+        descriptionView.setText(description);
         paintImg(getIntent().getStringExtra("srcUrl"));
     }
 
@@ -98,25 +101,27 @@ public class AdvertisementActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-    /**Метод реагирует на нажатие Favourite нового обьявления*/ /***ДОПИСАТЬ СЮДА РЕАЛИЗАЦИЮ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    /**Метод реагирует на нажатие Favourite нового обьявления*/
     public void advFavClick(View view) {
+        createDB();
+        addToDB(title,url,description,myDB);
     }
     /**
      * Метод создает базу данных или открывает созданную
      */
     private void createDB() {
         myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
-        myDB.execSQL("CREATE TABLE IF NOT EXISTS favourite ( title TEXT, url TEXT, srcUrl Text)");
+        myDB.execSQL("CREATE TABLE IF NOT EXISTS favourite ( title TEXT, url TEXT, description Text)");
 
     }
     /**
      * Метод добавляет элементы в таблицу избранных обьявлений
      */
-    private void addToDB(Advertisement adv, SQLiteDatabase myDB) {
+    private void addToDB(String title, String url, String description, SQLiteDatabase myDB) {
         ContentValues row = new ContentValues();
-        row.put("title", adv.getTitle());
-        row.put("url", adv.getUrl());
-        row.put("srcUrl", adv.getImageSrc());
+        row.put("title", title);
+        row.put("url", url);
+        row.put("description", description);
         myDB.insert("favourite", null, row);
 
     }
