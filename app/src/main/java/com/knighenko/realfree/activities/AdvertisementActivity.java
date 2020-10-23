@@ -15,9 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.knighenko.realfree.R;
 import com.knighenko.realfree.entity.Advertisement;
+import com.knighenko.realfree.model.UrlOfPages;
 import com.squareup.picasso.Picasso;
 
 import java.net.URLEncoder;
@@ -105,6 +107,7 @@ public class AdvertisementActivity extends AppCompatActivity {
     public void advFavClick(View view) {
         createDB();
         addToDB(title,url,description,myDB);
+        Toast.makeText(this, "Обьявление добавлено в Избранное ", Toast.LENGTH_LONG).show();
     }
     /**
      * Метод создает базу данных или открывает созданную
