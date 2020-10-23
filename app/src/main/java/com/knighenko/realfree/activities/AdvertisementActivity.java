@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.knighenko.realfree.R;
+import com.knighenko.realfree.entity.Advertisement;
 import com.squareup.picasso.Picasso;
 
 import java.net.URLEncoder;
@@ -27,7 +30,7 @@ public class AdvertisementActivity extends AppCompatActivity {
     private static final String LOG = "MyApp";
     private Toolbar toolbar;
     private String url;
-
+    private SQLiteDatabase myDB;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,5 +97,27 @@ public class AdvertisementActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    /**Метод реагирует на нажатие Favourite нового обьявления*/ /***ДОПИСАТЬ СЮДА РЕАЛИЗАЦИЮ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public void advFavClick(View view) {
+    }
+    /**
+     * Метод создает базу данных или открывает созданную
+     */
+    private void createDB() {
+        myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+        myDB.execSQL("CREATE TABLE IF NOT EXISTS favourite ( title TEXT, url TEXT, srcUrl Text)");
+
+    }
+    /**
+     * Метод добавляет элементы в таблицу избранных обьявлений
+     */
+    private void addToDB(Advertisement adv, SQLiteDatabase myDB) {
+        ContentValues row = new ContentValues();
+        row.put("title", adv.getTitle());
+        row.put("url", adv.getUrl());
+        row.put("srcUrl", adv.getImageSrc());
+        myDB.insert("favourite", null, row);
+
     }
 }
