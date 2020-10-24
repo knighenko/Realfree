@@ -32,7 +32,7 @@ import java.util.TimerTask;
 public class ServerService extends Service {
     private SQLiteDatabase myDB;
     private static final String SERVER_IP = "91.235.129.33";
-    // private static final String SERVER_IP ="10.0.2.2";
+   //  private static final String SERVER_IP ="10.0.2.2";
     private static final int PORT = 8080;
     private static int notificationId = 2;
     public static final String CHANNEL_1 = "ForegroundServiceChannel";
@@ -97,11 +97,11 @@ public class ServerService extends Service {
     }
 
     /**
-     * Метод посылает каждые 5 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
+     * Метод посылает каждые 10 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
      */
     private void readFromServerFefteenSec(final String Url) {
         int delay = 0; // delay for 0 sec.
-        int period = 5000; // repeat every 5 sec.
+        int period = 10000; // repeat every 10 sec.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
