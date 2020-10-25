@@ -26,6 +26,7 @@ import com.knighenko.realfree.model.ConnectServer;
 import com.knighenko.realfree.model.JsonToObject;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -67,8 +68,8 @@ public class ServerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String url = intent.getStringExtra("url");
 
+        String url = intent.getStringExtra("url");
         createNotificationChannel1();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -80,6 +81,7 @@ public class ServerService extends Service {
                 .build();
         startForeground(1, notification);
         readFromServerFefteenSec(url);
+
         return START_STICKY;
     }
 
@@ -100,11 +102,13 @@ public class ServerService extends Service {
      * Метод посылает каждые 10 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
      */
     private void readFromServerFefteenSec(final String Url) {
-        int delay = 0; // delay for 0 sec.
-        int period = 10000; // repeat every 10 sec.
+
+        int delay = 10000; // delay for 10 sec.
+        int period = 10000; // repeat every 1 sec.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
+                //System.out.println("time before is"+ Calendar.getInstance().getTime());
                 ConnectServer connectServer = null;
                 try {
                     connectServer = new ConnectServer(SERVER_IP, PORT);
@@ -146,6 +150,7 @@ public class ServerService extends Service {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+              //  System.out.println("time after is"+ Calendar.getInstance().getTime());
             }
         }, delay, period);
 
