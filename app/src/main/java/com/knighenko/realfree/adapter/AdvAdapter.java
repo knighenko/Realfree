@@ -37,7 +37,7 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull AdvListHolder holder, int position) {
-       
+
         holder.bind(advertisements.get(position));
 
     }

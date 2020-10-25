@@ -125,7 +125,7 @@ public class ServerService extends Service {
                             advIntent.putExtra("urlAdv", adv.getUrl());
                             advIntent.putExtra("title", adv.getTitle());
                             advIntent.putExtra("description", adv.getDescription());
-                            advIntent.putExtra("srcUrl", adv.getImageSrc());
+                            advIntent.putExtra("imageSrc", adv.getImageSrc());
 
                             PendingIntent pendingIntent = PendingIntent.getActivity(ServerService.this,
                                     notificationId, advIntent, PendingIntent.FLAG_UPDATE_CURRENT);

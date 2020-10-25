@@ -32,6 +32,7 @@ public class AdvertisementActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private String url;
     private String title;
+    private String imageSrc;
     private String description;
     private SQLiteDatabase myDB;
     @Override
@@ -45,12 +46,13 @@ public class AdvertisementActivity extends AppCompatActivity {
         this.toolbar = findViewById(R.id.toolbar);
         this.url=getIntent().getStringExtra("urlAdv");
         this.title=getIntent().getStringExtra("title");
+        this.imageSrc=getIntent().getStringExtra("imageSrc");
         this.description=getIntent().getStringExtra("description");
         toolbar.setTitle("OLX бесплатно");
         setSupportActionBar(toolbar);
         titleView.setText(title);
         descriptionView.setText(description);
-        paintImg(getIntent().getStringExtra("srcUrl"));
+        paintImg(imageSrc);
     }
 
     private void paintImg(String urlImg) {
@@ -106,7 +108,7 @@ public class AdvertisementActivity extends AppCompatActivity {
     /**Метод реагирует на нажатие Favourite нового обьявления*/
     public void advFavClick(View view) {
         createDB();
-        addToDB(title,url,description,myDB);
+        addToDB(title,url,imageSrc, description,myDB);
         Toast.makeText(this, "Обьявление добавлено в Избранное ", Toast.LENGTH_LONG).show();
     }
     /**
@@ -114,16 +116,17 @@ public class AdvertisementActivity extends AppCompatActivity {
      */
     private void createDB() {
         myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
-        myDB.execSQL("CREATE TABLE IF NOT EXISTS favourite ( title TEXT, url TEXT, description Text)");
+        myDB.execSQL("CREATE TABLE IF NOT EXISTS favourite ( title TEXT, url TEXT, imageSrc TEXT, description Text)");
 
     }
     /**
      * Метод добавляет элементы в таблицу избранных обьявлений
      */
-    private void addToDB(String title, String url, String description, SQLiteDatabase myDB) {
+    private void addToDB(String title, String url, String imageSrc, String description, SQLiteDatabase myDB) {
         ContentValues row = new ContentValues();
         row.put("title", title);
         row.put("url", url);
+        row.put("imageSrc", imageSrc);
         row.put("description", description);
         myDB.insert("favourite", null, row);
 
