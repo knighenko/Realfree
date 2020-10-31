@@ -5,7 +5,13 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.knighenko.realfree.entity.Advertisement;
+
+import java.util.ArrayList;
+
 public class FavAdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder>  {
+    private ArrayList<Advertisement> advertisements = new ArrayList<>();
     @NonNull
     @Override
     public AdvAdapter.AdvListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
