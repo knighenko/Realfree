@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class FavAdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder>  {
     private ArrayList<Advertisement> advertisements = new ArrayList<>();
+    private AdvAdapter.OnAdvertisementClickListener onAdvertisementClickListener;
     @NonNull
     @Override
     public AdvAdapter.AdvListHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
