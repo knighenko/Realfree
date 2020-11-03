@@ -28,4 +28,8 @@ public class FavAdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder
     public int getItemCount() {
         return 0;
     }
+    public interface OnAdvertisementClickListener {
+        void onAdvClick(Advertisement advertisement);
+        void onWhatsClick(Advertisement advertisement);
+    }
 }
