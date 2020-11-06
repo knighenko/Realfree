@@ -35,8 +35,8 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Advertisement> advertisements;
-    private static final String SERVER_IP = "91.235.129.33";
-    // private static final String SERVER_IP ="10.0.2.2";
+   // private static final String SERVER_IP = "91.235.129.33";
+     private static final String SERVER_IP ="10.0.2.2";
     private static final int PORT = 8080;
     private RecyclerView listAdvRecyclerView;
     private AdvAdapter advAdapter;

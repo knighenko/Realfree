@@ -58,7 +58,7 @@ public class SearchAdvertisements extends AppCompatActivity {
                 break;
             case R.id.electronics:
                 Toast.makeText(this, "Поиск в рубрике " + UrlOfPages.ELECTRONICS.getTitle(), Toast.LENGTH_LONG).show();
-                              intent = new Intent(SearchAdvertisements.this, MainActivity.class);
+                intent = new Intent(SearchAdvertisements.this, MainActivity.class);
                 intent.putExtra("url", UrlOfPages.ELECTRONICS.getUrl() + 1);
                 startActivity(intent);
 
@@ -98,12 +98,12 @@ public class SearchAdvertisements extends AppCompatActivity {
                 startActivity(intent);
                 Toast.makeText(this, "Поиск в рубрике " + UrlOfPages.WORLD_OF_CHILDREN.getTitle(), Toast.LENGTH_LONG).show();
                 break;
-            case R.id.world_of_children:
+            case R.id.zooproduct:
 
                 intent = new Intent(SearchAdvertisements.this, MainActivity.class);
-                intent.putExtra("url", UrlOfPages.WORLD_OF_CHILDREN.getUrl() + 1);
+                intent.putExtra("url", UrlOfPages.ZOOPRODUCT.getUrl() + 1);
                 startActivity(intent);
-                Toast.makeText(this, "Поиск в рубрике " + UrlOfPages.WORLD_OF_CHILDREN.getTitle(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Поиск в рубрике " + UrlOfPages.ZOOPRODUCT.getTitle(), Toast.LENGTH_LONG).show();
                 break;
         }
     }
