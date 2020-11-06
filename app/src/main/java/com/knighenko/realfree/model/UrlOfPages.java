@@ -7,7 +7,8 @@ public enum UrlOfPages {
     BUSINESS_AND_SERVICES("https://www.olx.ua/uslugi/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=10", "Бизнес и услуги"),
     FASHION_AND_STYLE("https://www.olx.ua/moda-i-stil/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=10", "Мода и стиль"),
     HOBBIES_AND_LEISURE("https://www.olx.ua/hobbi-otdyh-i-sport/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=10", "Хобби и досуг"),
-    WORLD_OF_CHILDREN("https://www.olx.ua/detskiy-mir/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=10", "Детский мир");
+    WORLD_OF_CHILDREN("https://www.olx.ua/detskiy-mir/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=10", "Детский мир"),
+    ZOOPRODUCT("https://www.olx.ua/uk/zhivotnye/tovary-dlya-zhivotnyh/kha/?search%5Bfilter_float_price%3Afrom%5D=free", "Зоотовары");
 
     private String url;
     private String title;

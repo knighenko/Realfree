@@ -13,4 +13,5 @@
     <string name="buttonOk">OK</string>
     <string name="textViewMonitor">Выберите одну или несколько рубрик для того, чтобы мониторить бесплатные обьявления и получать сообщения на телефон</string>
     <string name="world_of_children">Детский мир</string>
+    <string name="zooproduct">Зоопродукты</string>
 </resources>
