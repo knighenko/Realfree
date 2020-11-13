@@ -1,4 +1,4 @@
-package com.knighenko.realfree.model;
+ package com.knighenko.realfree.model;
 
 public enum UrlOfPages {
     HOME_GARDEN("https://www.olx.ua/dom-i-sad/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=15", "Дом и сад"),
@@ -8,7 +8,7 @@ public enum UrlOfPages {
     FASHION_AND_STYLE("https://www.olx.ua/moda-i-stil/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=15", "Мода и стиль"),
     HOBBIES_AND_LEISURE("https://www.olx.ua/hobbi-otdyh-i-sport/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=15", "Хобби и досуг"),
     WORLD_OF_CHILDREN("https://www.olx.ua/detskiy-mir/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=15", "Детский мир"),
-    ZOOPRODUCT("https://www.olx.ua/uk/zhivotnye/tovary-dlya-zhivotnyh/kha/?search%5Bfilter_float_price%3Afrom%5D=free", "Зоотовары");
+    ZOOPRODUCT("https://www.olx.ua/uk/zhivotnye/tovary-dlya-zhivotnyh/kharkov/?search%5Bfilter_float_price%3Afrom%5D=free&search%5Bdist%5D=50", "Зоотовары");
 
     private String url;
     private String title;
