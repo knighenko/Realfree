@@ -278,6 +278,9 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, FavouriteAdvertisements.class);
                 startActivity(intent);
                 return true;
+            case R.id.clear:
+               getApplicationContext().deleteDatabase("my.db");
+                      return true;
         }
 
         return false;
