@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.knighenko.realfree.R;
 import com.knighenko.realfree.adapter.AdvAdapter;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     private ArrayList<Advertisement> advertisements;
     private static final String SERVER_IP = "91.235.129.33";
-     //private static final String SERVER_IP ="10.0.2.2";
+    //private static final String SERVER_IP ="10.0.2.2";
     private static final int PORT = 8080;
     private RecyclerView listAdvRecyclerView;
     private AdvAdapter advAdapter;
@@ -229,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onWhatsClick(Advertisement advertisement) {
-                String urlAdv=advertisement.getUrl();
+                String urlAdv = advertisement.getUrl();
                 try {
                     PackageManager packageManager = getApplicationContext().getPackageManager();
                     Intent i = new Intent(Intent.ACTION_VIEW);
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     i.setPackage("com.whatsapp");
                     i.setData(Uri.parse(url));
                     if (i.resolveActivity(packageManager) != null) {
-                       startActivity(i);
+                        startActivity(i);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -279,8 +280,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.clear:
-               getApplicationContext().deleteDatabase("my.db");
-                      return true;
+                getApplicationContext().deleteDatabase("my.db");
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "База данных очищена!!!", Toast.LENGTH_SHORT);
+                toast.show();
+                myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+                myDB.execSQL("CREATE TABLE IF NOT EXISTS advertisement ( title TEXT, url TEXT, srcUrl Text)");
+                return true;
         }
 
         return false;
