@@ -18,7 +18,7 @@ public class ConnectServer {
 /**Метод для соединения с сервером, возвращает строку в виде Json
  * @param request - адрес URL*/
 
-    public String readJsonStrig(String request) throws IOException {
+    public String readJsonString(String request) throws IOException {
         outputStream = new DataOutputStream(socket.getOutputStream());
         System.out.println("Client connected to server");
         while (!socket.isOutputShutdown()) {
@@ -37,7 +37,7 @@ public class ConnectServer {
         }
         return null;
     }
-    public String readJsonStrig() throws IOException {
+    public String readJsonString() throws IOException {
         outputStream = new DataOutputStream(socket.getOutputStream());
         System.out.println("Client connected to server");
         while (!socket.isOutputShutdown()) {

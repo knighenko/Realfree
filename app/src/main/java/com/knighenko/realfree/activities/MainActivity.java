@@ -26,7 +26,6 @@ import com.knighenko.realfree.adapter.AdvAdapter;
 import com.knighenko.realfree.entity.Advertisement;
 import com.knighenko.realfree.model.ConnectServer;
 import com.knighenko.realfree.model.JsonToObject;
-import com.knighenko.realfree.model.UrlOfPages;
 import com.knighenko.realfree.service.ServerService;
 
 
@@ -190,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                         progressBar = (ProgressBar) findViewById(R.id.progressBar);
                         progressBar.setVisibility(ProgressBar.VISIBLE);
                         ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
-                        advertisements = new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements();
+                        advertisements = new JsonToObject(connectServer.readJsonString(Url)).getAdvertisements();
                         for (Advertisement adv : advertisements) {
                             addToDB(adv, myDB);
                         }

@@ -190,12 +190,11 @@ public class FavouriteSearch extends AppCompatActivity {
      * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
      */
     public void startTracking(ArrayList<String> strings) {
-        for (String url : strings) {
+
             Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
-            myIntent.putExtra("url", url);
-         //   ContextCompat.startForegroundService(this, myIntent);
-            this.startService(myIntent);
-        }
+            myIntent.putStringArrayListExtra("advertisements",strings);
+             this.startService(myIntent);
+
     }
 
     /**

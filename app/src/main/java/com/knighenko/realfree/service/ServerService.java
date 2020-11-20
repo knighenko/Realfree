@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 
@@ -23,9 +25,11 @@ import com.knighenko.realfree.model.ConnectServer;
 import com.knighenko.realfree.model.JsonToObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 
 public class ServerService extends Service {
     private SQLiteDatabase myDB;
@@ -34,7 +38,7 @@ public class ServerService extends Service {
     private static final int PORT = 8080;
     private static int notificationId = 2;
     public static final String CHANNEL_1 = "ForegroundServiceChannel";
-
+    private MediaPlayer mediaPlayer;
 
     public ServerService() {
 
@@ -66,7 +70,7 @@ public class ServerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        String url = intent.getStringExtra("url");
+        ArrayList<String> advertisements = intent.getStringArrayListExtra("advertisements");
         createNotificationChannel1();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -77,10 +81,14 @@ public class ServerService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
-        readFromServerTenSec(url);
+        System.out.println("//////////////////////////////////////////////////////////////// " + "service " + startId);
+        for (String url: advertisements){
+            readFromServerTenSec(url);
+        }
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
+
 
     // Destroy
     @Override
@@ -98,7 +106,7 @@ public class ServerService extends Service {
     /**
      * Метод посылает каждые 10 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления с использованием TimerTask
      */
-    /*
+/*
     private void readFromServerTenSec(final String Url) {
 
         int delay = 10000; // delay for 10 sec.
@@ -111,7 +119,7 @@ public class ServerService extends Service {
                 try {
                     connectServer = new ConnectServer(SERVER_IP, PORT);
 
-                    for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
+                    for (Advertisement adv : new JsonToObject(connectServer.readJsonString(Url)).getAdvertisements()) {
                         if (!checkInDB(adv.getTitle())) {
 
                             addToDB(adv, myDB);
@@ -153,64 +161,66 @@ public class ServerService extends Service {
         }, delay, period);
 
     }
-    */
+/*
 
     /**
      * Метод посылает каждые 10 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
      */
     private void readFromServerTenSec(final String Url) {
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    //System.out.println("time before is"+ Calendar.getInstance().getTime());
-                    while (true) {
-                        try {
-                            ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
+        int delay = 10000; // delay for 10 sec.
+        int period = 10000; // repeat every 10 sec.
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
 
-                            for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
-                                if (!checkInDB(adv.getTitle())) {
+                Read read = new Read();
+                read.execute(Url);
 
-                                    addToDB(adv, myDB);
 
-                                    Intent advIntent = new Intent(getBaseContext(),
-                                            AdvertisementActivity.class);
-                                    advIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    advIntent.putExtra("urlAdv", adv.getUrl());
-                                    advIntent.putExtra("title", adv.getTitle());
-                                    advIntent.putExtra("description", adv.getDescription());
-                                    advIntent.putExtra("imageSrc", adv.getImageSrc());
+                try {
+                    for (Advertisement adv : read.get()) {
+                        if (!checkInDB(adv.getTitle())) {
 
-                                    PendingIntent pendingIntent = PendingIntent.getActivity(ServerService.this,
-                                            notificationId, advIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                            addToDB(adv, myDB);
 
-                                    Notification notification = new NotificationCompat.Builder(ServerService.this, CHANNEL_1)
-                                            .setSmallIcon(R.drawable.ic_launcher_foreground)
-                                            .setContentTitle(adv.getTitle())
-                                            .setContentText(adv.getDescription())
-                                            .setPriority(NotificationCompat.PRIORITY_MAX)
-                                            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-                                            .setContentIntent(pendingIntent)
-                                            .setAutoCancel(true)
-                                            .build();
+                            Intent advIntent = new Intent(getBaseContext(),
+                                    AdvertisementActivity.class);
+                            advIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            advIntent.putExtra("urlAdv", adv.getUrl());
+                            advIntent.putExtra("title", adv.getTitle());
+                            advIntent.putExtra("description", adv.getDescription());
+                            advIntent.putExtra("imageSrc", adv.getImageSrc());
 
-                                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                                    notificationManager.notify(notificationId, notification);
-                                    notificationId++;
+                            PendingIntent pendingIntent = PendingIntent.getActivity(ServerService.this,
+                                    notificationId, advIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-                                }
-                                System.out.println("time after is"+ Calendar.getInstance().getTime());
-                            }
-                            Thread.sleep(10000);
-                        } catch (IOException | InterruptedException e) {
-                            e.printStackTrace();
+                            Notification notification = new NotificationCompat.Builder(ServerService.this, CHANNEL_1)
+                                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                                    .setContentTitle(adv.getTitle())
+                                    .setContentText(adv.getDescription())
+                                    .setPriority(NotificationCompat.PRIORITY_MAX)
+                                    .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                                    .setContentIntent(pendingIntent)
+                                    .setAutoCancel(true)
+                                    .build();
+
+                            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                            notificationManager.notify(notificationId, notification);
+                            notificationId++;
+
                         }
+                        System.out.println("time after is" + Calendar.getInstance().getTime());
                     }
 
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-
-            }).start();
+            }
+        }, delay, period);
 
     }
 
@@ -253,5 +263,22 @@ public class ServerService extends Service {
         return false;
     }
 
+    class Read extends AsyncTask<String, Void, ArrayList<Advertisement>> {
+
+        @Override
+        protected ArrayList<Advertisement> doInBackground(String... strings) {
+            ArrayList<Advertisement> advertisements = null;
+            try {
+                ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
+                advertisements = new JsonToObject(connectServer.readJsonString(strings[0])).getAdvertisements();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return advertisements;
+        }
+    }
 
 }
+
+
+
