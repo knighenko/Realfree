@@ -201,7 +201,7 @@ public class FavouriteSearch extends AppCompatActivity {
      * Метод создает базу данных или открывает созданную + создает таблицу advertisement
      */
     private void createDB() {
-        myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+        myDB = openOrCreateDatabase("myNew.db", MODE_PRIVATE, null);
         myDB.execSQL("CREATE TABLE IF NOT EXISTS favourite_search ( title TEXT, url TEXT)");
 
     }

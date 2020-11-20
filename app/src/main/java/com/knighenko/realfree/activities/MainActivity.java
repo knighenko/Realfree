@@ -228,6 +228,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+            /**
+             * Метод обрабатывает нажатие на кнопку ватцапа
+             */
             @Override
             public void onWhatsClick(Advertisement advertisement) {
                 String urlAdv = advertisement.getUrl();
@@ -280,11 +283,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.clear:
-                getApplicationContext().deleteDatabase("my.db");
+                getApplicationContext().deleteDatabase("myNew.db");
                 Toast toast = Toast.makeText(getApplicationContext(),
                         "База данных очищена!!!", Toast.LENGTH_SHORT);
                 toast.show();
-                myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+                myDB = openOrCreateDatabase("myNew.db", MODE_PRIVATE, null);
                 myDB.execSQL("CREATE TABLE IF NOT EXISTS advertisement ( title TEXT, url TEXT, srcUrl Text)");
                 return true;
         }

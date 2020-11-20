@@ -115,7 +115,7 @@ public class AdvertisementActivity extends AppCompatActivity {
      * Метод создает базу данных или открывает созданную
      */
     private void createDB() {
-        myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+        myDB = openOrCreateDatabase("myNew.db", MODE_PRIVATE, null);
         myDB.execSQL("CREATE TABLE IF NOT EXISTS favourite ( title TEXT, url TEXT, imageSrc TEXT, description Text)");
 
     }

@@ -10,13 +10,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.knighenko.realfree.R;
 import com.knighenko.realfree.activities.AdvertisementActivity;
@@ -33,7 +30,7 @@ import java.util.TimerTask;
 public class ServerService extends Service {
     private SQLiteDatabase myDB;
     private static final String SERVER_IP = "91.235.129.33";
-   //  private static final String SERVER_IP ="10.0.2.2";
+    //  private static final String SERVER_IP ="10.0.2.2";
     private static final int PORT = 8080;
     private static int notificationId = 2;
     public static final String CHANNEL_1 = "ForegroundServiceChannel";
@@ -80,9 +77,9 @@ public class ServerService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
-        readFromServerFefteenSec(url);
+        readFromServerTenSec(url);
 
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     // Destroy
@@ -99,12 +96,13 @@ public class ServerService extends Service {
     }
 
     /**
-     * Метод посылает каждые 10 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
+     * Метод посылает каждые 10 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления с использованием TimerTask
      */
-    private void readFromServerFefteenSec(final String Url) {
+    /*
+    private void readFromServerTenSec(final String Url) {
 
         int delay = 10000; // delay for 10 sec.
-        int period = 10000; // repeat every 1 sec.
+        int period = 10000; // repeat every 10 sec.
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
@@ -155,12 +153,73 @@ public class ServerService extends Service {
         }, delay, period);
 
     }
+    */
+
+    /**
+     * Метод посылает каждые 10 секунд сообщение на сервер, сохраняет данные на телефон и проверяет совпадения и выводит новые обьявления
+     */
+    private void readFromServerTenSec(final String Url) {
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //System.out.println("time before is"+ Calendar.getInstance().getTime());
+                    while (true) {
+                        try {
+                            ConnectServer connectServer = new ConnectServer(SERVER_IP, PORT);
+
+                            for (Advertisement adv : new JsonToObject(connectServer.readJsonStrig(Url)).getAdvertisements()) {
+                                if (!checkInDB(adv.getTitle())) {
+
+                                    addToDB(adv, myDB);
+
+                                    Intent advIntent = new Intent(getBaseContext(),
+                                            AdvertisementActivity.class);
+                                    advIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    advIntent.putExtra("urlAdv", adv.getUrl());
+                                    advIntent.putExtra("title", adv.getTitle());
+                                    advIntent.putExtra("description", adv.getDescription());
+                                    advIntent.putExtra("imageSrc", adv.getImageSrc());
+
+                                    PendingIntent pendingIntent = PendingIntent.getActivity(ServerService.this,
+                                            notificationId, advIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                                    Notification notification = new NotificationCompat.Builder(ServerService.this, CHANNEL_1)
+                                            .setSmallIcon(R.drawable.ic_launcher_foreground)
+                                            .setContentTitle(adv.getTitle())
+                                            .setContentText(adv.getDescription())
+                                            .setPriority(NotificationCompat.PRIORITY_MAX)
+                                            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                                            .setContentIntent(pendingIntent)
+                                            .setAutoCancel(true)
+                                            .build();
+
+                                    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                    notificationManager.notify(notificationId, notification);
+                                    notificationId++;
+
+                                }
+                                System.out.println("time after is"+ Calendar.getInstance().getTime());
+                            }
+                            Thread.sleep(10000);
+                        } catch (IOException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+
+            }).start();
+
+    }
+
 
     /**
      * Метод создает базу данных или открывает созданную + создает таблицу advertisement
      */
     private void createDB() {
-        myDB = openOrCreateDatabase("my.db", MODE_PRIVATE, null);
+        myDB = openOrCreateDatabase("myNew.db", MODE_PRIVATE, null);
         myDB.execSQL("CREATE TABLE IF NOT EXISTS advertisement ( title TEXT, url TEXT, srcUrl Text)");
 
     }
@@ -182,8 +241,8 @@ public class ServerService extends Service {
      */
     private boolean checkInDB(String title) {
         String query = "SELECT EXISTS (SELECT  * FROM advertisement WHERE title = ? LIMIT 1)";
-       // Cursor cursor = myDB.rawQuery("SELECT EXISTS (select * from  advertisement WHERE title = '" + title + "'  LIMIT 1)", null);
-        Cursor cursor = myDB.rawQuery(query, new String[] {title});
+        // Cursor cursor = myDB.rawQuery("SELECT EXISTS (select * from  advertisement WHERE title = '" + title + "'  LIMIT 1)", null);
+        Cursor cursor = myDB.rawQuery(query, new String[]{title});
         while (cursor.moveToNext()) {
             if (cursor.getInt(0) == 1) {
                 cursor.close();
