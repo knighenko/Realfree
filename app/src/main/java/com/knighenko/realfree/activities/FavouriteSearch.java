@@ -193,7 +193,8 @@ public class FavouriteSearch extends AppCompatActivity {
         for (String url : strings) {
             Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
             myIntent.putExtra("url", url);
-            ContextCompat.startForegroundService(this, myIntent);
+         //   ContextCompat.startForegroundService(this, myIntent);
+            this.startService(myIntent);
         }
     }
 
