@@ -17,6 +17,7 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
+
 import com.knighenko.realfree.R;
 import com.knighenko.realfree.activities.AdvertisementActivity;
 import com.knighenko.realfree.activities.MainActivity;
@@ -38,7 +39,7 @@ public class ServerService extends Service {
     private static final int PORT = 8080;
     private static int notificationId = 2;
     public static final String CHANNEL_1 = "ForegroundServiceChannel";
-    private MediaPlayer mediaPlayer;
+
 
     public ServerService() {
 
@@ -81,8 +82,8 @@ public class ServerService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
-        System.out.println("//////////////////////////////////////////////////////////////// " + "service " + startId);
-        for (String url: advertisements){
+
+        for (String url : advertisements) {
             readFromServerTenSec(url);
         }
 
@@ -211,7 +212,7 @@ public class ServerService extends Service {
                             notificationId++;
 
                         }
-                        System.out.println("time after is" + Calendar.getInstance().getTime());
+                     //   System.out.println("time after is" + Calendar.getInstance().getTime());
                     }
 
                 } catch (ExecutionException e) {
