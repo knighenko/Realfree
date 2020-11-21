@@ -39,7 +39,7 @@ public class ServerService extends Service {
     private static final int PORT = 8080;
     private static int notificationId = 2;
     public static final String CHANNEL_1 = "ForegroundServiceChannel";
-
+    private Timer timer;
 
     public ServerService() {
 
@@ -64,7 +64,7 @@ public class ServerService extends Service {
     public void onCreate() {
         createDB();
         super.onCreate();
-
+        timer = new Timer();
 
     }
 
@@ -169,9 +169,8 @@ public class ServerService extends Service {
      */
     private void readFromServerTenSec(final String Url) {
 
-        int delay = 10000; // delay for 10 sec.
-        int period = 10000; // repeat every 10 sec.
-        Timer timer = new Timer();
+        int delay = 100; // delay for 10 sec.
+        int period = 7000; // repeat every 10 sec.
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
 
@@ -211,9 +210,9 @@ public class ServerService extends Service {
                             notificationId++;
 
                         }
-                        //   System.out.println("time after is" + Calendar.getInstance().getTime());
-                    }
 
+                    }
+                    System.out.println("***************************time after is********************************" + Calendar.getInstance().getTime());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
