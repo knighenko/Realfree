@@ -175,12 +175,11 @@ public class ServerService extends Service {
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
 
-                Read read = new Read();
-                read.execute(Url);
-
-
+                ConnectServer connectServer = null;
                 try {
-                    for (Advertisement adv : read.get()) {
+                    connectServer = new ConnectServer(SERVER_IP, PORT);
+                    ArrayList<Advertisement> advertisements = new JsonToObject(connectServer.readJsonString(Url)).getAdvertisements();
+                    for (Advertisement adv : advertisements) {
                         if (!checkInDB(adv.getTitle())) {
 
                             addToDB(adv, myDB);
@@ -212,12 +211,10 @@ public class ServerService extends Service {
                             notificationId++;
 
                         }
-                     //   System.out.println("time after is" + Calendar.getInstance().getTime());
+                        //   System.out.println("time after is" + Calendar.getInstance().getTime());
                     }
 
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -265,7 +262,6 @@ public class ServerService extends Service {
     }
 
     class Read extends AsyncTask<String, Void, ArrayList<Advertisement>> {
-
         @Override
         protected ArrayList<Advertisement> doInBackground(String... strings) {
             ArrayList<Advertisement> advertisements = null;
