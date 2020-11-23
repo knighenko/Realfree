@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.knighenko.realfree.R;
-
+/**This class for my favourite advertisement*/
 public class FavouriteAdvertisements extends AppCompatActivity {
 
     @Override
