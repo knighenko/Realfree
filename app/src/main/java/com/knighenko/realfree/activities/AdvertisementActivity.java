@@ -28,7 +28,7 @@ public class AdvertisementActivity extends AppCompatActivity {
     private TextView titleView;
     private TextView descriptionView;
     private ImageView imageView;
-    private static final String LOG = "MyApp";
+
     private Toolbar toolbar;
     private String url;
     private String title;
@@ -121,7 +121,7 @@ public class AdvertisementActivity extends AppCompatActivity {
         }
     }
     /**Метод реагирует на нажатие WhatsApp нового обьявления для Светланы*/
-    public void advFavClickSvitlana(View view) {
+    public void advWhatsClickSvitlana(View view) {
         try {
             PackageManager packageManager = getApplicationContext().getPackageManager();
             Intent i = new Intent(Intent.ACTION_VIEW);

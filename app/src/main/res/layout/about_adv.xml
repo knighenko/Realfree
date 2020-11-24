@@ -58,7 +58,7 @@
             />
         <ImageView
             android:id="@+id/whats_ic_svitlana"
-            android:onClick="advWhatsClick"
+            android:onClick="advWhatsClickSvitlana"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_whats_sveta"
@@ -66,7 +66,7 @@
             />
             <ImageView
                 android:id="@+id/favourite_ic"
-                android:onClick="advFavClickSvitlana"
+                android:onClick="advFavClick"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_heart_24"

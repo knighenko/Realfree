@@ -63,6 +63,8 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
         private TextView title;
         private TextView description;
         private ImageView whatsImage;
+        private ImageView whatsImageOks;
+        private ImageView whatsImageSvit;
         private ImageView imageView;
 
         public AdvListHolder(View itemView) {
@@ -71,6 +73,8 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
             description = itemView.findViewById(R.id.textViewDescription);
             imageView = itemView.findViewById(R.id.smallImageViewAdv);
             whatsImage=itemView.findViewById(R.id.whats_ic);
+            whatsImageOks=itemView.findViewById(R.id.whats_ic_oksana);
+            whatsImageSvit=itemView.findViewById(R.id.whats_ic_svitlana);
             description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -107,5 +111,7 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
     public interface OnAdvertisementClickListener {
         void onAdvClick(Advertisement advertisement);
         void onWhatsClick(Advertisement advertisement);
+        void onWhatsClickOks(Advertisement advertisement);
+        void onWhatsClickSvitlana(Advertisement advertisement);
     }
 }

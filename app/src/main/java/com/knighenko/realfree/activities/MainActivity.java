@@ -246,6 +246,40 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onWhatsClickOks(Advertisement advertisement) {
+                String urlAdv = advertisement.getUrl();
+                try {
+                    PackageManager packageManager = getApplicationContext().getPackageManager();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    String urlWhats = "https://api.whatsapp.com/send?phone=" + "+380953239418" + "&text=" + URLEncoder.encode(urlAdv, "UTF-8");
+                    i.setPackage("com.whatsapp");
+                    i.setData(Uri.parse(urlWhats));
+                    if (i.resolveActivity(packageManager) != null) {
+                        startActivity(i);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onWhatsClickSvitlana(Advertisement advertisement) {
+                String urlAdv = advertisement.getUrl();
+                try {
+                    PackageManager packageManager = getApplicationContext().getPackageManager();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    String urlWhats = "https://api.whatsapp.com/send?phone=" + "+380993033561" + "&text=" + URLEncoder.encode(urlAdv, "UTF-8");
+                    i.setPackage("com.whatsapp");
+                    i.setData(Uri.parse(urlWhats));
+                    if (i.resolveActivity(packageManager) != null) {
+                        startActivity(i);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         };
         advAdapter = new AdvAdapter(onAdvertisementClickListener);
         advAdapter.setListAdv(advertisements);
