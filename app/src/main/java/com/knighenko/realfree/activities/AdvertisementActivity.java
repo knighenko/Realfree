@@ -105,6 +105,36 @@ public class AdvertisementActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    /**Метод реагирует на нажатие WhatsApp нового обьявления для Оксаны*/
+    public void advWhatsClickOksana(View view) {
+        try {
+            PackageManager packageManager = getApplicationContext().getPackageManager();
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            String urlWhats = "https://api.whatsapp.com/send?phone=" + "+380953239418" + "&text=" + URLEncoder.encode(url, "UTF-8");
+            i.setPackage("com.whatsapp");
+            i.setData(Uri.parse(urlWhats));
+            if (i.resolveActivity(packageManager) != null) {
+                startActivity(i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    /**Метод реагирует на нажатие WhatsApp нового обьявления для Светланы*/
+    public void advFavClickSvitlana(View view) {
+        try {
+            PackageManager packageManager = getApplicationContext().getPackageManager();
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            String urlWhats = "https://api.whatsapp.com/send?phone=" + "+380993033561" + "&text=" + URLEncoder.encode(url, "UTF-8");
+            i.setPackage("com.whatsapp");
+            i.setData(Uri.parse(urlWhats));
+            if (i.resolveActivity(packageManager) != null) {
+                startActivity(i);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**Метод реагирует на нажатие Favourite нового обьявления*/
     public void advFavClick(View view) {
         createDB();
@@ -131,4 +161,7 @@ public class AdvertisementActivity extends AppCompatActivity {
         myDB.insert("favourite", null, row);
 
     }
+
+
+
 }
