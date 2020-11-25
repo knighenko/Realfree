@@ -93,14 +93,14 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
                 @Override
                 public void onClick(View view) {
                     Advertisement adv = advertisements.get(getLayoutPosition());
-                    onAdvertisementClickListener.onWhatsClick(adv);
+                    onAdvertisementClickListener.onWhatsClickOks(adv);
                 }
             });
             whatsImageSvit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Advertisement adv = advertisements.get(getLayoutPosition());
-                    onAdvertisementClickListener.onWhatsClick(adv);
+                    onAdvertisementClickListener.onWhatsClickSvitlana(adv);
                 }
             });
         }
