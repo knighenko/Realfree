@@ -89,6 +89,20 @@ public class AdvAdapter extends RecyclerView.Adapter<AdvAdapter.AdvListHolder> {
                     onAdvertisementClickListener.onWhatsClick(adv);
                 }
             });
+            whatsImageOks.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Advertisement adv = advertisements.get(getLayoutPosition());
+                    onAdvertisementClickListener.onWhatsClick(adv);
+                }
+            });
+            whatsImageSvit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Advertisement adv = advertisements.get(getLayoutPosition());
+                    onAdvertisementClickListener.onWhatsClick(adv);
+                }
+            });
         }
 
         public void bind(Advertisement adv) {
