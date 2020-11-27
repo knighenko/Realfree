@@ -242,6 +242,8 @@ public class MainActivity extends AppCompatActivity {
                     if (i.resolveActivity(packageManager) != null) {
                         startActivity(i);
                     }
+
+                 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
