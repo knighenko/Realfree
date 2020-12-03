@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(i);
                     }
 
-                 
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

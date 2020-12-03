@@ -19,12 +19,12 @@
         <service
             android:name=".service.ServerService"
             android:enabled="true"
-            android:exported="true" ></service>
+            android:exported="true"
+         ></service>
 
         <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
