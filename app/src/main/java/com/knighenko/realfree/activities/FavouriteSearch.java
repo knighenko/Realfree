@@ -194,9 +194,14 @@ public class FavouriteSearch extends AppCompatActivity {
 
     public void startTracking(ArrayList<String> strings) {
 
-            Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
-            myIntent.putStringArrayListExtra("advertisements",strings);
-            this.startService(myIntent);
+        Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
+        myIntent.putStringArrayListExtra("advertisements", strings);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            this.startForegroundService(myIntent);
+        } else {
+            startService(myIntent);
+        }
 
 
     }
@@ -252,8 +257,8 @@ public class FavouriteSearch extends AppCompatActivity {
     private void startOrStopTracking() {
         ArrayList<String> strings = readFromDBFavourite();
 
-            startTracking(strings);
-       if (isMyServiceRunning(ServerService.class) & strings.size() == 0) {
+        startTracking(strings);
+        if (isMyServiceRunning(ServerService.class) & strings.size() == 0) {
             stopTracking();
         }
     }

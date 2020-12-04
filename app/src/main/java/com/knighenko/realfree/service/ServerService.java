@@ -65,14 +65,14 @@ public class ServerService extends Service {
         createDB();
         super.onCreate();
         timer = new Timer();
-
+        createNotificationChannel1();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         ArrayList<String> advertisements = intent.getStringArrayListExtra("advertisements");
-        createNotificationChannel1();
+
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
