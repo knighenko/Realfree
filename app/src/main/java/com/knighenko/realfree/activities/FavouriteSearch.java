@@ -1,5 +1,6 @@
 package com.knighenko.realfree.activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
@@ -11,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -189,11 +191,13 @@ public class FavouriteSearch extends AppCompatActivity {
     /**
      * Метод запускает сервис по отслеживанию новых обьявлений из заданной рубрики
      */
+
     public void startTracking(ArrayList<String> strings) {
 
             Intent myIntent = new Intent(getApplicationContext(), ServerService.class);
             myIntent.putStringArrayListExtra("advertisements",strings);
-             this.startService(myIntent);
+            this.startService(myIntent);
+
 
     }
 
