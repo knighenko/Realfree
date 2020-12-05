@@ -23,7 +23,7 @@ import com.knighenko.realfree.model.UrlOfPages;
 import com.squareup.picasso.Picasso;
 
 import java.net.URLEncoder;
-
+/**This class is for Advertisement*/
 public class AdvertisementActivity extends AppCompatActivity {
     private TextView titleView;
     private TextView descriptionView;
